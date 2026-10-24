@@ -1,2220 +1,1033 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<script id="lumi-getcssvar">
+window.getCssVar = window.getCssVar || function(name) {
+  try {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  } catch (e) { return ''; }
+};
+</script>
+
+<style id="lumi-runtime">
+/* luminous.css */
+/*
+ * Luminous runtime stylesheet — injected once into every generated widget's
+ * <head> by the C++ widget agent (id="lumi-runtime"). Single Source of Truth
+ * for ALL design tokens and pre-baked .lumi-* component classes.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:ital,wght@0,300..700;1,300..700&family=Google+Sans+Code:ital,wght,MONO@0,300..700,0..1;1,300..700,0..1&display=swap');
+
+:root {
+  --body-bg: transparent;
+  --ff-sans: 'Google Sans Flex', 'Google Sans Text', 'Google Sans', sans-serif;
+  --ff-mono: 'Google Sans Code', 'Google Sans Mono', monospace;
+
+  --lumi-sys-spacing--xxs: 2px;
+  --lumi-sys-spacing--xs: 4px;
+  --lumi-sys-spacing--s: 8px;
+  --lumi-sys-spacing--m: 12px;
+  --lumi-sys-spacing--l: 16px;
+  --lumi-sys-spacing--xl: 20px;
+  --lumi-sys-spacing--xxl: 24px;
+  --lumi-sys-spacing--3xl: 28px;
+  --lumi-sys-spacing--4xl: 36px;
+
+  --lumi-sys-shape--none: 0px;
+  --lumi-sys-shape--extra-small: 4px;
+  --lumi-sys-shape--small: 8px;
+  --lumi-sys-shape--medium: 12px;
+  --lumi-sys-shape--large: 16px;
+  --lumi-sys-shape--large-increased: 20px;
+  --lumi-sys-shape--large-max: 24px;
+  --lumi-sys-shape--xl: 28px;
+  --lumi-sys-shape--xl-increased: 32px;
+  --lumi-sys-shape--xl-max: 40px;
+  --lumi-sys-shape--xxl: 48px;
+  --lumi-sys-shape--xxl-increased: 56px;
+  --lumi-sys-shape--full: 999px;
+
+  --lumi-sys-elevation--level1: 0 0 20px 0 rgba(0, 0, 0, 0.04);
+  --lumi-sys-elevation--level2: 0 0 20px 0 rgba(0, 0, 0, 0.11);
+
+  --lumi-sys-color--surface: #fdfcfc;
+  --lumi-sys-color--surface-dim: #f2f0f0;
+  --lumi-sys-color--surface-bright: #ffffff;
+  --lumi-sys-color--surface-background: #fdfcfc;
+  --lumi-sys-color--surface-accent: #9dd2ff;
+  --lumi-sys-color--surface-container: #f2f0f0;
+  --lumi-sys-color--surface-container-high: #e6e6e6;
+  --lumi-sys-color--surface-translucent: rgba(255, 255, 255, 0.88);
+  --lumi-sys-color--on-surface: #000000;
+  --lumi-sys-color--on-surface-default: #000000;
+  --lumi-sys-color--on-surface-variant: rgba(0, 0, 0, 0.55);
+  --lumi-sys-color--on-surface-de-emphasis: rgba(0, 0, 0, 0.55);
+  --lumi-sys-color--on-surface-low: rgba(0, 0, 0, 0.08);
+  --lumi-sys-color--positive: #008052;
+  --lumi-sys-color--positive-container: #daf9d4;
+  --lumi-sys-color--on-positive-container: #009954;
+  --lumi-sys-color--error: #de2d29;
+  --lumi-sys-color--error-container: #ffdeec;
+  --lumi-sys-color--on-error-container: #de2d29;
+  --lumi-sys-color--accent: #9dd2ff;
+  --lumi-sys-color--accent-container: #dcf1ff;
+  --lumi-sys-color--accent-fixed: #3186ff;
+  --lumi-sys-color--primary: #3186ff;
+  --lumi-sys-color--on-primary: #ffffff;
+  --lumi-sys-color--black: #000000;
+  --lumi-sys-color--white: #ffffff;
+  --lumi-sys-color--outline: #727676;
+  --lumi-sys-color--stroke-default: #e3e3e3;
+
+  --lumi-sys-opacity-state--hover: 0.08;
+  --lumi-sys-opacity-state--focus: 0.08;
+  --lumi-sys-opacity-state--pressed: 0.12;
+  --lumi-sys-opacity-state--disabled: 0.12;
+  --lumi-sys-opacity-state--disabled-label: 0.38;
+
+  --lumi-sys-color--code-background: #000000;
+  --lumi-sys-color--code-primary-text: #ffffff;
+  --lumi-sys-color--code-blue-text: #4fa0ff;
+  --lumi-sys-color--code-green-text: #60d673;
+  --lumi-sys-color--code-grey-text: #808080;
+  --lumi-sys-color--code-pink-text: #ff96da;
+  --lumi-sys-color--code-purple-text: #969dff;
+  --lumi-sys-color--code-red-text: #ff5a59;
+  --lumi-sys-color--code-yellow-text: #ffdb0f;
+
+  --lumi-sys-color--chart-series-1: #2575fc;
+  --lumi-sys-color--chart-series-2: #5b6e9e;
+  --lumi-sys-color--chart-series-3: #228a49;
+  --lumi-sys-color--chart-series-4: #62991b;
+  --lumi-sys-color--chart-series-5: #1e564d;
+  --lumi-sys-color--chart-series-6: #526a45;
+  --lumi-sys-color--chart-series-7: #2780c4;
+  --lumi-sys-color--chart-series-8: #997112;
+  --lumi-sys-color--chart-series-9: #705ec2;
+  --lumi-sys-color--chart-series-10: #c84288;
+}
+
+:root[data-theme="dark"],
+body.dark-mode,
+:root[data-theme="dark"] body {
+  --body-bg: #0f0f0f;
+  --lumi-sys-elevation--level1: 0 0 20px 0 rgba(0, 0, 0, 0.28);
+  --lumi-sys-elevation--level2: 0 0 20px 0 rgba(0, 0, 0, 0.40);
+
+  --lumi-sys-color--surface: #0f0f0f;
+  --lumi-sys-color--surface-dim: #141414;
+  --lumi-sys-color--surface-bright: #1c1c1c;
+  --lumi-sys-color--surface-background: #0f0f0f;
+  --lumi-sys-color--surface-accent: #14204f;
+  --lumi-sys-color--surface-container: #141414;
+  --lumi-sys-color--surface-container-high: #1c1c1c;
+  --lumi-sys-color--surface-translucent: rgba(24, 24, 27, 0.88);
+  --lumi-sys-color--on-surface: #e0e0e0;
+  --lumi-sys-color--on-surface-default: #e0e0e0;
+  --lumi-sys-color--on-surface-variant: rgba(255, 255, 255, 0.55);
+  --lumi-sys-color--on-surface-de-emphasis: rgba(255, 255, 255, 0.55);
+  --lumi-sys-color--on-surface-low: rgba(255, 255, 255, 0.12);
+  --lumi-sys-color--positive: #0ebc5f;
+  --lumi-sys-color--positive-container: #002220;
+  --lumi-sys-color--on-positive-container: #0ebc5f;
+  --lumi-sys-color--error: #ff4c45;
+  --lumi-sys-color--error-container: #3c0202;
+  --lumi-sys-color--on-error-container: #ff4c45;
+  --lumi-sys-color--accent: #1f3b9b;
+  --lumi-sys-color--accent-container: #192967;
+  --lumi-sys-color--accent-fixed: #3186ff;
+  --lumi-sys-color--primary: #9dd2ff;
+  --lumi-sys-color--on-primary: #192967;
+  --lumi-sys-color--black: #000000;
+  --lumi-sys-color--white: #ffffff;
+  --lumi-sys-color--outline: #9a9b9c;
+  --lumi-sys-color--stroke-default: #2d2f38;
+
+  --lumi-sys-color--code-background: #141414;
+  --lumi-sys-color--code-primary-text: #ffffff;
+  --lumi-sys-color--code-blue-text: #4fa0ff;
+  --lumi-sys-color--code-green-text: #60d673;
+  --lumi-sys-color--code-grey-text: #808080;
+  --lumi-sys-color--code-pink-text: #ff96da;
+  --lumi-sys-color--code-purple-text: #969dff;
+  --lumi-sys-color--code-red-text: #ff5a59;
+  --lumi-sys-color--code-yellow-text: #ffdb0f;
+
+  --lumi-sys-color--chart-series-1: #9dd2ff;
+  --lumi-sys-color--chart-series-2: #96a7d6;
+  --lumi-sys-color--chart-series-3: #50e389;
+  --lumi-sys-color--chart-series-4: #c8f585;
+  --lumi-sys-color--chart-series-5: #f5f2e6;
+  --lumi-sys-color--chart-series-6: #dcd8c0;
+  --lumi-sys-color--chart-series-7: #82c7ff;
+  --lumi-sys-color--chart-series-8: #f5d77f;
+  --lumi-sys-color--chart-series-9: #d9ceff;
+  --lumi-sys-color--chart-series-10: #ffa6d7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --body-bg: #0f0f0f;
+    --lumi-sys-elevation--level1: 0 0 20px 0 rgba(0, 0, 0, 0.28);
+    --lumi-sys-elevation--level2: 0 0 20px 0 rgba(0, 0, 0, 0.40);
+
+    --lumi-sys-color--surface: #0f0f0f;
+    --lumi-sys-color--surface-dim: #141414;
+    --lumi-sys-color--surface-bright: #1c1c1c;
+    --lumi-sys-color--surface-background: #0f0f0f;
+    --lumi-sys-color--surface-accent: #14204f;
+    --lumi-sys-color--surface-container: #141414;
+    --lumi-sys-color--surface-container-high: #1c1c1c;
+    --lumi-sys-color--surface-translucent: rgba(24, 24, 27, 0.88);
+    --lumi-sys-color--on-surface: #e0e0e0;
+    --lumi-sys-color--on-surface-default: #e0e0e0;
+    --lumi-sys-color--on-surface-variant: rgba(255, 255, 255, 0.55);
+    --lumi-sys-color--on-surface-de-emphasis: rgba(255, 255, 255, 0.55);
+    --lumi-sys-color--on-surface-low: rgba(255, 255, 255, 0.12);
+    --lumi-sys-color--positive: #0ebc5f;
+    --lumi-sys-color--positive-container: #002220;
+    --lumi-sys-color--on-positive-container: #0ebc5f;
+    --lumi-sys-color--error: #ff4c45;
+    --lumi-sys-color--error-container: #3c0202;
+    --lumi-sys-color--on-error-container: #ff4c45;
+    --lumi-sys-color--accent: #1f3b9b;
+    --lumi-sys-color--accent-container: #192967;
+    --lumi-sys-color--accent-fixed: #3186ff;
+    --lumi-sys-color--primary: #9dd2ff;
+    --lumi-sys-color--on-primary: #192967;
+    --lumi-sys-color--black: #000000;
+    --lumi-sys-color--white: #ffffff;
+    --lumi-sys-color--outline: #9a9b9c;
+    --lumi-sys-color--stroke-default: #2d2f38;
+
+    --lumi-sys-color--code-background: #141414;
+    --lumi-sys-color--code-primary-text: #ffffff;
+    --lumi-sys-color--code-blue-text: #4fa0ff;
+    --lumi-sys-color--code-green-text: #60d673;
+    --lumi-sys-color--code-grey-text: #808080;
+    --lumi-sys-color--code-pink-text: #ff96da;
+    --lumi-sys-color--code-purple-text: #969dff;
+    --lumi-sys-color--code-red-text: #ff5a59;
+    --lumi-sys-color--code-yellow-text: #ffdb0f;
+
+    --lumi-sys-color--chart-series-1: #9dd2ff;
+    --lumi-sys-color--chart-series-2: #96a7d6;
+    --lumi-sys-color--chart-series-3: #50e389;
+    --lumi-sys-color--chart-series-4: #c8f585;
+    --lumi-sys-color--chart-series-5: #f5f2e6;
+    --lumi-sys-color--chart-series-6: #dcd8c0;
+    --lumi-sys-color--chart-series-7: #82c7ff;
+    --lumi-sys-color--chart-series-8: #f5d77f;
+    --lumi-sys-color--chart-series-9: #d9ceff;
+    --lumi-sys-color--chart-series-10: #ffa6d7;
+  }
+}
+
+:root {
+  --surface: var(--lumi-sys-color--surface, #fdfcfc);
+  --surface-dim: var(--lumi-sys-color--surface-dim, #f2f0f0);
+  --surface-bright: var(--lumi-sys-color--surface-bright, #ffffff);
+  --surface-container: var(--lumi-sys-color--surface-container, #f2f0f0);
+  --surface-container-high: var(--lumi-sys-color--surface-container-high, #e6e6e6);
+  --surface-accent: var(--lumi-sys-color--surface-accent, #9dd2ff);
+  --surface-translucent: var(--lumi-sys-color--surface-translucent, rgba(255, 255, 255, 0.88));
+  --on-surface: var(--lumi-sys-color--on-surface, #000000);
+  --on-surface-variant: var(--lumi-sys-color--on-surface-variant, rgba(0, 0, 0, 0.55));
+  --on-surface-low: var(--lumi-sys-color--on-surface-low, rgba(0, 0, 0, 0.08));
+  --primary: var(--lumi-sys-color--primary, #3186ff);
+  --accent: var(--lumi-sys-color--accent, #9dd2ff);
+  --accent-container: var(--lumi-sys-color--accent-container, #dcf1ff);
+  --accent-fixed: var(--lumi-sys-color--accent-fixed, #3186ff);
+  --positive: var(--lumi-sys-color--positive, #008052);
+  --positive-container: var(--lumi-sys-color--positive-container, #daf9d4);
+  --error: var(--lumi-sys-color--error, #de2d29);
+  --error-container: var(--lumi-sys-color--error-container, #ffdeec);
+  --outline: var(--lumi-sys-color--outline, #727676);
+  --stroke-default: var(--lumi-sys-color--stroke-default, #e3e3e3);
+  --r-s: var(--lumi-sys-shape--small, 8px);
+  --r-m: var(--lumi-sys-shape--medium, 12px);
+  --r-l: var(--lumi-sys-shape--large, 16px);
+  --r-full: var(--lumi-sys-shape--full, 999px);
+}
+
+html, body {
+  background: var(--body-bg, transparent) !important;
+  color: var(--on-surface) !important;
+  overflow-y: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
+}
+
+button {
+  appearance: none;
+  -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lumi-sys-spacing--xs, 6px);
+  min-height: 36px;
+  padding: 6px 16px;
+  font-family: var(--ff-sans, 'Google Sans Flex', 'Google Sans', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--on-surface, #000000);
+  background-color: var(--surface-bright, #ffffff);
+  border: 1px solid var(--stroke-default, #e3e3e3);
+  border-radius: var(--lumi-sys-shape--full, 999px);
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+button:hover { background-color: var(--surface-container-high, #e6e6e6); }
+button.active, button.is-active, button.selected, button.is-selected, button[aria-pressed="true"], button[aria-selected="true"] {
+  background-color: var(--accent-container, #dcf1ff);
+  color: var(--accent-fixed, #3186ff);
+  border-color: transparent;
+}
+
+svg text { stroke: none; paint-order: fill; }
+</style>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>STV Color - ERP Multi-Sucursal & POS</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Chart.js para análisis -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- FontAwesome 6 Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>Arquitectura Georredundante Bancaria</title>
+  <style>
+    /* ============================================================
+     * WIDGET-SPECIFIC LAYOUT
+     * ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; }
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            brand: {
-              navy: '#071828',
-              sidebar: '#0b233a',
-              carddark: '#112f4d',
-              primary: '#0284c7',
-              accent: '#38bdf8',
-              surface: '#ffffff',
-              bg: '#f8fafc'
-            }
-          }
-        }
+    body {
+      margin: 0;
+      padding: 12px;
+      font-family: var(--ff-sans);
+      color: var(--on-surface);
+      background: transparent;
+      overflow-y: hidden;
+    }
+
+    .widget-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header & Summary Card */
+    .header-card {
+      background: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-radius: var(--r-l, 16px);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .header-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .header-title {
+      margin: 0;
+      color: var(--on-surface);
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 24px;
+    }
+
+    .header-subtitle {
+      margin: 0;
+      color: var(--on-surface-variant);
+      font-size: 13px;
+      font-family: var(--ff-mono);
+      line-height: 18px;
+    }
+
+    /* Status Pill Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: var(--r-full, 999px);
+      font-size: 13px;
+      font-family: var(--ff-mono);
+      font-weight: 500;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      white-space: nowrap;
+    }
+
+    .status-badge.normal {
+      background: var(--positive-container);
+      color: var(--positive);
+      border: 1px solid var(--positive);
+    }
+
+    .status-badge.failover {
+      background: var(--error-container);
+      color: var(--error);
+      border: 1px solid var(--error);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .status-dot.pulse {
+      animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1.0; }
+    }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .metric-box {
+      background: var(--surface-dim);
+      padding: 8px 12px;
+      border-radius: var(--r-s, 8px);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--on-surface-variant);
+      font-family: var(--ff-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .metric-value {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--on-surface);
+      font-family: var(--ff-mono);
+      line-height: 20px;
+      transition: color 0.25s ease;
+    }
+
+    .metric-value.positive { color: var(--positive); }
+
+    /* Control Deck */
+    .controls-deck {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-dim);
+      padding: 6px;
+      border-radius: var(--r-full, 999px);
+      border: 1px solid var(--stroke-default);
+    }
+
+    .state-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 8px 16px;
+      border-radius: var(--r-full, 999px);
+      font-family: var(--ff-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--on-surface-variant);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .state-btn:hover {
+      color: var(--on-surface);
+      background: var(--surface-container-high);
+    }
+
+    .state-btn.active {
+      background: var(--accent-container);
+      color: var(--primary);
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* SVG Viewport Container */
+    .diagram-viewport {
+      background: var(--surface-bright);
+      border: 1px solid var(--stroke-default);
+      border-radius: var(--r-l, 16px);
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      user-select: none;
+    }
+
+    /* SVG Animation and Transitions */
+    .flow-line {
+      stroke-dasharray: 6 6;
+      animation: dash-flow 1.2s linear infinite;
+    }
+
+    @keyframes dash-flow {
+      to { stroke-dashoffset: -24; }
+    }
+
+    .node-element {
+      transition: opacity 0.3s ease;
+    }
+
+    .fade-dim { opacity: 0.25; }
+
+    /* Broken / disrupted routes (failover visuals) */
+    .route-broken {
+      stroke-dasharray: 3 5;
+      opacity: 0.7;
+    }
+
+    .fiber-broken {
+      stroke-dasharray: 2 6;
+      opacity: 0.4;
+    }
+
+    text {
+      stroke: none !important;
+      paint-order: fill;
+    }
+
+    /* Reduced motion: honor user preference */
+    @media (prefers-reduced-motion: reduce) {
+      .flow-line,
+      .status-dot.pulse {
+        animation: none !important;
+      }
+      .node-element,
+      .metric-value,
+      .status-badge {
+        transition: none !important;
       }
     }
-  </script>
-  <style>
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    @media print {
-      body * { visibility: hidden; }
-      #printArea, #printArea * { visibility: visible; }
-      #printArea { position: absolute; left: 0; top: 0; width: 100%; }
+
+    /* Narrow screen: keep the metrics readable */
+    @media (max-width: 480px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .header-card { padding: 12px 14px; }
+      .state-btn { font-size: 12px; padding: 8px 10px; }
     }
   </style>
-</head>
-<body class="bg-[#f8fafc] text-slate-800 antialiased font-sans min-h-screen flex flex-col">
 
-  <!-- BARRA DE NAVEGACIÓN SUPERIOR (HEADER) -->
-  <header class="bg-gradient-to-r from-[#071828] via-[#0b2742] to-[#11395f] text-white h-16 flex items-center justify-between px-3 md:px-6 shadow-lg z-30 sticky top-0">
-    <div class="flex items-center gap-3">
-      <button id="toggleSidebarBtn" class="lg:hidden p-2 rounded-lg hover:bg-white/10 text-white transition focus:outline-none">
-        <i class="fa-solid fa-bars text-lg"></i>
-      </button>
-
-      <!-- Logo STV Color -->
-      <div class="flex items-center gap-2.5">
-        <div class="h-9 w-9 bg-sky-500 rounded-xl flex items-center justify-center font-bold text-white shadow-md shadow-sky-500/30">
-          <i class="fa-solid fa-fill-drip text-lg"></i>
-        </div>
-        <div>
-          <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1">
-            STV <span class="text-sky-400 font-light italic">Color</span>
-          </span>
-          <span class="text-[9px] tracking-widest uppercase font-semibold text-sky-200/80 block -mt-1">Pinturas & ERP Central</span>
-        </div>
-      </div>
-
-      <!-- Selector rápido de Sucursal Activa en Barra Superior -->
-      <div class="hidden sm:flex items-center gap-2 ml-4 pl-4 border-l border-white/15">
-        <span class="text-[11px] font-medium text-slate-300">Sucursal Activa:</span>
-        <div class="relative">
-          <select id="topbarBranchSelector" onchange="App.switchBranch(this.value)" class="bg-sky-950/80 border border-sky-500/40 text-sky-200 text-xs font-semibold rounded-lg px-3 py-1.5 pr-8 focus:ring-2 focus:ring-sky-400 focus:outline-none cursor-pointer">
-            <!-- Opciones cargadas dinámicamente -->
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <!-- Acciones Rápidas Superior -->
-    <div class="flex items-center gap-2 sm:gap-4">
-      <button onclick="App.openNewBranchModal()" class="hidden md:flex items-center gap-1.5 text-xs bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 px-3 py-1.5 rounded-lg transition font-medium">
-        <i class="fa-solid fa-plus-circle"></i>
-        <span>Nueva Sucursal</span>
-      </button>
-
-      <button onclick="BodegaModule.filterCriticalStock()" class="flex items-center gap-1.5 text-xs bg-white/10 hover:bg-white/15 border border-white/15 px-3 py-1.5 rounded-lg transition text-slate-200 hover:text-white">
-        <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
-        <span class="hidden md:inline">Alertas Stock</span>
-        <span id="headerAlertsCount" class="bg-amber-500 text-slate-900 font-bold px-1.5 py-0.2 rounded-full text-[10px]">0</span>
-      </button>
-
-      <!-- Perfil Operativo -->
-      <div class="flex items-center gap-3 pl-2 sm:pl-3 border-l border-white/15">
-        <div class="text-right hidden sm:block">
-          <p id="headerBranchManager" class="text-xs font-bold leading-tight text-white">Estev Vásquez</p>
-          <span id="headerBranchNameBadge" class="text-[10px] text-sky-300 font-medium">Zona 7 (Central)</span>
-        </div>
-        <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-sky-600 to-cyan-400 p-0.5 shadow-sm">
-          <div class="w-full h-full rounded-full bg-slate-900 flex items-center justify-center font-bold text-xs text-sky-300">
-            EV
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <!-- CONTENEDOR PRINCIPAL: MENÚ LATERAL Y VISTAS -->
-  <div class="flex flex-1 overflow-hidden relative">
-
-    <!-- SIDEBAR / MENÚ LATERAL CON SUCURSALES DINÁMICAS -->
-    <aside id="sidebarMenu" class="w-64 bg-[#071828] text-slate-300 flex-shrink-0 flex flex-col justify-between transition-all duration-300 fixed inset-y-16 left-0 z-20 lg:static lg:h-auto -translate-x-full lg:translate-x-0 border-r border-slate-800">
-      <div class="py-4 px-3 space-y-1.5 overflow-y-auto">
-
-        <!-- Selector de Tienda / Sucursal en Sidebar -->
-        <div class="p-3 mb-2 rounded-xl bg-slate-900/80 border border-slate-800 shadow-inner">
-          <div class="flex items-center justify-between text-[11px] font-semibold text-slate-400 mb-1.5">
-            <span>SUCURSAL EN USO</span>
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          </div>
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-store text-sky-400 text-sm"></i>
-            <span id="sidebarActiveBranchLabel" class="text-xs font-bold text-white truncate">Zona 7</span>
-          </div>
-          <p id="sidebarActiveBranchAddress" class="text-[10px] text-slate-400 truncate mt-0.5">Calzada San Juan, Ciudad</p>
-        </div>
-
-        <!-- Botón Escritorio -->
-        <button onclick="App.navigateTo('dashboard')" id="nav-dashboard" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold transition bg-sky-600 text-white shadow-sm shadow-sky-600/30">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-chart-pie w-4 text-center"></i>
-            <span>Escritorio</span>
-          </div>
-          <i class="fa-solid fa-chevron-right text-xs opacity-75"></i>
-        </button>
-
-        <div class="pt-3 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Módulos de la Tienda</div>
-
-        <!-- Módulo Bodega / Inventario -->
-        <button onclick="App.navigateTo('bodega')" id="nav-bodega" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-800/80 transition text-slate-300">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-boxes-stacked w-4 text-center text-amber-400"></i>
-            <span>Bodega e Inventario</span>
-          </div>
-          <span id="sidebarStockCountBadge" class="text-[10px] bg-slate-800 text-amber-400 font-bold px-2 py-0.5 rounded-full border border-slate-700">0</span>
-        </button>
-
-        <!-- Módulo Ventas / Facturación -->
-        <button onclick="App.navigateTo('ventas')" id="nav-ventas" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-800/80 transition text-slate-300">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-cash-register w-4 text-center text-emerald-400"></i>
-            <span>Punto de Venta (POS)</span>
-          </div>
-          <span class="text-[9px] bg-emerald-950 text-emerald-300 font-semibold px-1.5 py-0.5 rounded border border-emerald-800/50">Activo</span>
-        </button>
-
-        <!-- Módulo Gestión de Tiendas / Sucursales -->
-        <div class="pt-4 pb-1 px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider flex items-center justify-between">
-          <span>Red de Sucursales</span>
-          <button onclick="App.openNewBranchModal()" title="Agregar Tienda" class="text-sky-400 hover:text-sky-300 text-xs font-bold">
-            <i class="fa-solid fa-plus"></i>
-          </button>
-        </div>
-
-        <button onclick="App.navigateTo('sucursales')" id="nav-sucursales" class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-800/80 transition text-slate-300">
-          <div class="flex items-center gap-3">
-            <i class="fa-solid fa-network-wired w-4 text-center text-sky-400"></i>
-            <span>Control de Tiendas</span>
-          </div>
-          <span id="sidebarTotalBranchesBadge" class="text-[10px] bg-sky-950 text-sky-300 font-bold px-1.5 py-0.5 rounded border border-sky-800/50">3</span>
-        </button>
-
-        <!-- Lista Dinámica de Sucursales para Cambio Rápido -->
-        <div class="space-y-1 pl-1 pt-1" id="sidebarBranchesList">
-          <!-- Se llena dinámicamente con las sucursales -->
-        </div>
-
-      </div>
-
-      <!-- Footer del Sidebar -->
-      <div class="p-3 border-t border-slate-800/80 bg-slate-900/50">
-        <div class="flex items-center justify-between text-xs text-slate-400 mb-2">
-          <span>STV Cloud v2.5</span>
-          <span class="text-emerald-400 font-bold text-[10px] flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Online
-          </span>
-        </div>
-        <button onclick="App.restoreSampleData()" class="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition border border-slate-700/60">
-          <i class="fa-solid fa-rotate-left text-[11px]"></i> Restablecer Demo
-        </button>
-      </div>
-    </aside>
-
-    <!-- ÁREA DE CONTENIDO PRINCIPAL -->
-    <main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 bg-[#f8fafc]">
-
-      <!-- ==============================================
-           VISTA 1: DASHBOARD DE LA SUCURSAL ACTIVA
-      =============================================== -->
-      <section id="view-dashboard" class="space-y-6">
-
-        <!-- Banner de Bienvenida y Filtro de Sucursal -->
-        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="px-2.5 py-1 rounded-md bg-sky-100 text-sky-800 font-bold text-xs">SUCURSAL SELECCIONADA</span>
-              <h1 id="dashBranchTitle" class="text-xl md:text-2xl font-black text-slate-900">Sucursal Zona 7</h1>
-            </div>
-            <p id="dashBranchSubtitle" class="text-xs text-slate-500 mt-1">
-              Supervisada por: <strong id="dashBranchManagerName" class="text-slate-700 font-semibold">Estev Vásquez</strong> | Calzada San Juan 14-20
-            </p>
-          </div>
-
-          <!-- Acciones Rápidas -->
-          <div class="flex flex-wrap items-center gap-2.5">
-            <button onclick="App.navigateTo('ventas')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm shadow-emerald-600/30 transition flex items-center gap-2">
-              <i class="fa-solid fa-cart-plus"></i> Nueva Venta POS
-            </button>
-            <button onclick="BodegaModule.openProductModal()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm shadow-sky-600/30 transition flex items-center gap-2">
-              <i class="fa-solid fa-plus"></i> Agregar Producto
-            </button>
-          </div>
-        </div>
-
-        <!-- TARJETAS DE MÉTRICAS Y GRÁFICO (REPLICA MEJORADA DE LA IMAGEN) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-          <!-- Gráfico de Pastel: Categorías más vendidas -->
-          <div class="lg:col-span-6 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div>
-                <h3 class="font-extrabold text-slate-800 text-base">Categorías más vendidas</h3>
-                <p class="text-xs text-slate-400">Distribución de facturación en la tienda</p>
-              </div>
-              <span id="chartBranchBadge" class="text-xs font-bold bg-sky-50 text-sky-700 px-2.5 py-1 rounded-lg border border-sky-100">Zona 7</span>
-            </div>
-
-            <div class="relative py-4 flex items-center justify-center" style="min-height: 270px; max-height: 310px;">
-              <canvas id="categoryChart"></canvas>
-            </div>
-
-            <div class="text-[11px] text-slate-500 pt-3 border-t border-slate-100 flex items-center justify-between font-medium">
-              <span>STVcolor.com.gt</span>
-              <span id="chartTotalItemsLabel">Total Despachado: 0 u.</span>
-            </div>
-          </div>
-
-          <!-- Métricas Numéricas: Total Hoy, Total Mes, Promedio -->
-          <div class="lg:col-span-3 space-y-4">
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Hoy</span>
-              <div class="mt-2 flex items-baseline justify-between">
-                <h2 id="metricTotalHoy" class="text-2xl font-black text-slate-900">Q 0.00</h2>
-                <span class="text-emerald-600 text-xs font-bold flex items-center gap-0.5">
-                  <i class="fa-solid fa-arrow-trend-up"></i> +14%
-                </span>
-              </div>
-              <p id="metricVentasCount" class="text-xs text-slate-400 mt-1">0 Ventas realizadas</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Mensual</span>
-              <div class="mt-2">
-                <h2 id="metricTotalMes" class="text-2xl font-black text-sky-700">Q 0.00</h2>
-              </div>
-              <p class="text-xs text-slate-400 mt-1">Periodo fiscal activo</p>
-            </div>
-
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Ticket Promedio</span>
-              <div class="mt-2">
-                <h2 id="metricPromedio" class="text-2xl font-black text-slate-800">Q 0.00</h2>
-              </div>
-              <p class="text-xs text-slate-400 mt-1">Promedio por comprobante</p>
-            </div>
-          </div>
-
-          <!-- Tarjeta Meta Mensual con Barra de Progreso -->
-          <div class="lg:col-span-3 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
-            <div>
-              <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Meta Mensual de Tienda</span>
-              <h2 id="metricMetaMonto" class="text-2xl font-black text-slate-900 mt-2">Q 208,567.78</h2>
-
-              <div class="mt-4 pt-3 border-t border-slate-100">
-                <span class="text-xs text-slate-500 font-medium">Facturado al momento:</span>
-                <p id="metricMetaAlcanzadoMonto" class="text-lg font-extrabold text-slate-800 mt-0.5">Q 0.00</p>
-              </div>
-
-              <!-- Banner de porcentaje alcanzado réplica gráfica con degradado -->
-              <div class="mt-4 bg-gradient-to-br from-[#0c2742] via-[#0f3456] to-[#124270] text-white p-4 rounded-xl shadow-md">
-                <div class="flex items-center gap-3">
-                  <div class="p-2.5 bg-white/10 rounded-lg text-sky-300">
-                    <i class="fa-solid fa-chart-line text-xl"></i>
-                  </div>
-                  <div>
-                    <span class="text-[10px] font-bold text-sky-200 uppercase tracking-wider">Porcentaje Alcanzado</span>
-                    <h3 id="metricPorcentajeText" class="text-2xl font-black text-white">0.00%</h3>
-                  </div>
-                </div>
-
-                <div class="w-full bg-slate-800/80 rounded-full h-2.5 mt-3 overflow-hidden border border-white/10">
-                  <div id="metricProgressBar" class="bg-gradient-to-r from-sky-400 to-emerald-400 h-2.5 rounded-full transition-all duration-700" style="width: 0%"></div>
-                </div>
-
-                <p id="metricFaltanteLabel" class="text-[10px] text-sky-200 mt-2 font-medium">Calculando faltante...</p>
-              </div>
-            </div>
-
-            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-              <span><i class="fa-regular fa-clock mr-1 text-sky-600"></i> Cierre de mes:</span>
-              <span class="font-bold text-slate-700">30 días restantes</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- TABLAS INFERIORES: PRODUCTOS MÁS VENDIDOS Y STOCK CRÍTICO -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-          <!-- Ranking Top Productos de la Sucursal -->
-          <div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
-            <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-              <div>
-                <h3 class="font-bold text-slate-800 text-sm">Productos más vendidos</h3>
-                <p class="text-xs text-slate-400">Ranking en esta sucursal</p>
-              </div>
-              <span class="text-xs bg-slate-100 text-slate-700 px-2.5 py-1 rounded-md font-semibold">Top Ventas</span>
-            </div>
-
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-xs">
-                <thead>
-                  <tr class="text-slate-400 border-b border-slate-200 font-semibold uppercase">
-                    <th class="py-2.5 px-2">Top</th>
-                    <th class="py-2.5 px-2">Producto</th>
-                    <th class="py-2.5 px-2 text-right">Cant. Vendida</th>
-                  </tr>
-                </thead>
-                <tbody id="dashTopProductsTableBody" class="divide-y divide-slate-100">
-                  <!-- Se llena dinámicamente -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <!-- Stock Crítico con Filtros de Exportación -->
-          <div class="lg:col-span-7 bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 mb-3">
-              <div>
-                <h3 class="font-bold text-slate-800 text-sm">Stock crítico y alertas mínimas</h3>
-                <p class="text-xs text-slate-400">Control de reposición para esta bodega</p>
-              </div>
-
-              <!-- Botones de Acción (Copy, Excel, CSV, PDF) -->
-              <div class="flex items-center gap-1.5 flex-wrap">
-                <button onclick="ExportUtils.copyTable('stockMinTable')" class="text-xs bg-sky-600 hover:bg-sky-700 text-white font-medium px-2.5 py-1.5 rounded-lg transition flex items-center gap-1">
-                  <i class="fa-regular fa-copy"></i> Copiar
-                </button>
-                <button onclick="ExportUtils.exportExcel()" class="text-xs bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-2.5 py-1.5 rounded-lg transition flex items-center gap-1">
-                  <i class="fa-regular fa-file-excel"></i> Excel
-                </button>
-                <button onclick="ExportUtils.exportCSV()" class="text-xs bg-teal-600 hover:bg-teal-700 text-white font-medium px-2.5 py-1.5 rounded-lg transition flex items-center gap-1">
-                  <i class="fa-solid fa-file-csv"></i> CSV
-                </button>
-                <button onclick="window.print()" class="text-xs bg-rose-600 hover:bg-rose-700 text-white font-medium px-2.5 py-1.5 rounded-lg transition flex items-center gap-1">
-                  <i class="fa-regular fa-file-pdf"></i> Imprimir
-                </button>
-              </div>
-            </div>
-
-            <!-- Buscador en tiempo real de stock -->
-            <div class="mb-3 flex justify-end">
-              <div class="relative w-full sm:w-64">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                <input type="text" onkeyup="DashboardModule.searchAlertsTable(this.value)" placeholder="Buscar en tabla..." class="w-full text-xs pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-sky-500">
-              </div>
-            </div>
-
-            <div class="overflow-x-auto">
-              <table id="stockMinTable" class="w-full text-left text-xs">
-                <thead>
-                  <tr class="text-slate-500 border-b border-slate-200 font-semibold uppercase bg-slate-50">
-                    <th class="py-2.5 px-3">Tienda</th>
-                    <th class="py-2.5 px-2">Código</th>
-                    <th class="py-2.5 px-3">Producto</th>
-                    <th class="py-2.5 px-2 text-center">Stock</th>
-                    <th class="py-2.5 px-2 text-center">Mínimo</th>
-                    <th class="py-2.5 px-2 text-center">Diferencia</th>
-                    <th class="py-2.5 px-3 text-center">Estado</th>
-                  </tr>
-                </thead>
-                <tbody id="dashStockAlertsTableBody" class="divide-y divide-slate-100">
-                  <!-- Se llena con productos de la sucursal activa -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==============================================
-           VISTA 2: BODEGA / INVENTARIO POR SUCURSAL
-      =============================================== -->
-      <section id="view-bodega" class="hidden space-y-6">
-
-        <!-- Encabezado de Bodega -->
-        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="p-2 bg-amber-100 text-amber-800 rounded-xl text-sm">
-                <i class="fa-solid fa-boxes-stacked"></i>
-              </span>
-              <h2 class="text-xl font-bold text-slate-900">Bodega & Catálogo: <span id="bodegaBranchNameHeading" class="text-sky-600 font-extrabold">Sucursal Zona 7</span></h2>
-            </div>
-            <p class="text-xs text-slate-500 mt-1">Control de existencias exclusivo e independiente para esta ubicación</p>
-          </div>
-
-          <div class="flex items-center gap-2 flex-wrap">
-            <button onclick="BodegaModule.openTransferModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2">
-              <i class="fa-solid fa-right-left"></i> Trasladar Stock
-            </button>
-            <button onclick="BodegaModule.openProductModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2">
-              <i class="fa-solid fa-plus"></i> Nuevo Producto
-            </button>
-          </div>
-        </div>
-
-        <!-- Tarjetas resumen de Inventario de la sucursal -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-semibold text-slate-500">Total Referencias</span>
-            <h3 id="statTotalItems" class="text-xl font-black text-slate-800 mt-1">0</h3>
-          </div>
-          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-semibold text-slate-500">Unidades Totales</span>
-            <h3 id="statTotalUnits" class="text-xl font-black text-sky-700 mt-1">0</h3>
-          </div>
-          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-semibold text-slate-500">Valor de Inventario (Venta)</span>
-            <h3 id="statTotalValue" class="text-xl font-black text-emerald-700 mt-1">Q 0.00</h3>
-          </div>
-          <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-            <span class="text-xs font-semibold text-slate-500">Alertas de Reposición</span>
-            <h3 id="statTotalAlerts" class="text-xl font-black text-rose-600 mt-1">0</h3>
-          </div>
-        </div>
-
-        <!-- Filtros y Tabla General de Productos -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-            <div class="relative flex-1 max-w-md">
-              <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
-              <input type="text" id="inventorySearch" onkeyup="BodegaModule.filterProducts()" placeholder="Buscar por código, pintura o descripción..." class="w-full text-xs pl-8 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:outline-none">
-            </div>
-
-            <div class="flex items-center gap-2 flex-wrap">
-              <select id="categoryFilter" onchange="BodegaModule.filterProducts()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-slate-700 font-semibold focus:outline-none">
-                <option value="ALL">Todas las Categorías</option>
-                <option value="Latex">Latex Gama</option>
-                <option value="Anticorrosivo">Anticorrosivo R15</option>
-                <option value="Diluyentes">Diluyentes / Thinner</option>
-                <option value="Aceite">Aceite Gama</option>
-                <option value="Herramientas">Herramientas / Lijas</option>
-              </select>
-
-              <select id="stockFilter" onchange="BodegaModule.filterProducts()" class="text-xs bg-slate-50 border border-slate-300 rounded-xl px-3 py-2.5 text-slate-700 font-semibold focus:outline-none">
-                <option value="ALL">Todo el Stock</option>
-                <option value="LOW">Bajo Stock</option>
-                <option value="ZERO">Agotados (0)</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-              <thead>
-                <tr class="bg-slate-50 text-slate-600 font-semibold uppercase border-y border-slate-200">
-                  <th class="py-3 px-3">Código</th>
-                  <th class="py-3 px-3">Producto</th>
-                  <th class="py-3 px-3">Categoría</th>
-                  <th class="py-3 px-3 text-center">Stock Actual</th>
-                  <th class="py-3 px-3 text-center">Mínimo</th>
-                  <th class="py-3 px-3 text-right">Precio Costo</th>
-                  <th class="py-3 px-3 text-right">Precio Venta</th>
-                  <th class="py-3 px-3 text-center">Estado</th>
-                  <th class="py-3 px-3 text-center">Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="inventoryTableBody" class="divide-y divide-slate-100">
-                <!-- Se llena dinámicamente -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==============================================
-           VISTA 3: VENTAS / PUNTO DE VENTA (POS)
-      =============================================== -->
-      <section id="view-ventas" class="hidden space-y-6">
-
-        <!-- Subpestañas del POS -->
-        <div class="flex items-center gap-3 border-b border-slate-200 pb-2">
-          <button onclick="VentasModule.switchSubView('pos')" id="subtab-pos" class="px-4 py-2 font-bold text-xs rounded-xl bg-sky-600 text-white shadow-sm transition">
-            <i class="fa-solid fa-cash-register mr-1.5"></i> Terminal de Cobro
-          </button>
-          <button onclick="VentasModule.switchSubView('historial')" id="subtab-historial" class="px-4 py-2 font-bold text-xs rounded-xl text-slate-600 hover:bg-slate-200 transition">
-            <i class="fa-solid fa-receipt mr-1.5"></i> Historial de Facturas
-          </button>
-        </div>
-
-        <!-- SUB-VISTA: PUNTO DE VENTA (TERMINAL) -->
-        <div id="subview-pos" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-          <!-- Catálogo de Productos para la Venta -->
-          <div class="lg:col-span-7 space-y-4">
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-              <div class="flex items-center justify-between mb-3">
-                <div>
-                  <h3 class="font-extrabold text-slate-800 text-sm">Catálogo de Productos</h3>
-                  <p class="text-xs text-slate-400">Mostrando inventario disponible en <strong id="posBranchNameLabel" class="text-sky-600">Zona 7</strong></p>
-                </div>
-                <span class="text-xs bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-lg border border-emerald-200">En Línea</span>
-              </div>
-
-              <div class="relative mb-3">
-                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
-                <input type="text" id="posSearchInput" onkeyup="VentasModule.filterPOSCatalog(this.value)" placeholder="Escribe el nombre o código de la pintura..." class="w-full text-xs pl-8 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:outline-none">
-              </div>
-
-              <!-- Grid interactivo de productos -->
-              <div id="posProductsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[460px] overflow-y-auto pr-1">
-                <!-- Se llena mediante JS con productos de la sucursal -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Factura y Carrito de Compras en Vivo -->
-          <div class="lg:col-span-5 space-y-4">
-            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between" style="min-height: 520px;">
-              <div>
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                  <div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-sky-600">Ticket de Venta</span>
-                    <h3 id="posCartBranchHeader" class="font-bold text-slate-800 text-sm">Sucursal Zona 7</h3>
-                  </div>
-                  <span id="facturaNumeroLabel" class="text-xs font-mono font-bold bg-slate-100 px-2.5 py-1 rounded-lg text-slate-700">FAC-0001</span>
-                </div>
-
-                <!-- Selección / Creación de Cliente -->
-                <div class="my-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <div class="flex items-center justify-between mb-1.5">
-                    <span class="text-xs font-semibold text-slate-700">Cliente / Receptor:</span>
-                    <button onclick="VentasModule.openNewClientModal()" class="text-[11px] text-sky-600 hover:text-sky-700 font-bold">
-                      + Nuevo Cliente
-                    </button>
-                  </div>
-                  <select id="posClientSelect" class="w-full text-xs bg-white border border-slate-300 rounded-lg p-2 focus:ring-2 focus:ring-sky-500 font-medium text-slate-800">
-                    <!-- Clientes cargados dinámicamente -->
-                  </select>
-                </div>
-
-                <!-- Selección Método de Pago -->
-                <div class="mb-3 flex items-center gap-2">
-                  <label class="text-[11px] font-semibold text-slate-600">Forma de Pago:</label>
-                  <select id="posPaymentMethod" class="text-xs bg-slate-50 border border-slate-200 rounded-lg p-1.5 font-medium text-slate-700">
-                    <option value="Efectivo">Efectivo</option>
-                    <option value="Tarjeta">Tarjeta de Crédito / Débito</option>
-                    <option value="Transferencia">Transferencia Bancaria</option>
-                  </select>
-                </div>
-
-                <!-- Tabla de productos en el ticket -->
-                <div class="overflow-y-auto max-h-52 border-y border-slate-100 py-2">
-                  <table class="w-full text-xs">
-                    <thead>
-                      <tr class="text-slate-400 font-semibold">
-                        <th class="text-left pb-1">Desc.</th>
-                        <th class="text-center pb-1">Cant.</th>
-                        <th class="text-right pb-1">Subtotal</th>
-                        <th class="pb-1 w-6"></th>
-                      </tr>
-                    </thead>
-                    <tbody id="posCartTableBody" class="divide-y divide-slate-100">
-                      <!-- Ítems del carrito -->
-                    </tbody>
-                  </table>
-                  <div id="posCartEmptyNotice" class="text-center py-8 text-slate-400 text-xs">
-                    <i class="fa-solid fa-cart-arrow-down text-2xl mb-1 text-slate-300 block"></i>
-                    No has agregado productos al ticket
-                  </div>
-                </div>
-              </div>
-
-              <!-- Totales y Acción de Emisión -->
-              <div class="pt-4 border-t border-slate-100 space-y-2">
-                <div class="flex justify-between text-xs text-slate-500 font-medium">
-                  <span>Subtotal Neto:</span>
-                  <span id="posSubtotalLabel" class="font-bold text-slate-700">Q 0.00</span>
-                </div>
-                <div class="flex justify-between text-xs text-slate-500 font-medium">
-                  <span>IVA Incluido (12%):</span>
-                  <span id="posIvaLabel" class="font-bold text-slate-700">Q 0.00</span>
-                </div>
-                <div class="flex justify-between text-base font-black text-slate-900 border-t border-slate-200 pt-2">
-                  <span>TOTAL A PAGAR:</span>
-                  <span id="posTotalLabel" class="text-sky-700 font-black">Q 0.00</span>
-                </div>
-
-                <div class="pt-2 grid grid-cols-2 gap-2">
-                  <button onclick="VentasModule.clearCart()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold py-2.5 rounded-xl transition">
-                    Cancelar
-                  </button>
-                  <button onclick="VentasModule.checkout()" class="w-full bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold py-2.5 rounded-xl shadow-md shadow-sky-600/30 transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-receipt"></i> Emitir Factura
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SUB-VISTA: HISTORIAL DE FACTURAS -->
-        <div id="subview-historial" class="hidden bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
-          <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
-            <div>
-              <h3 class="font-bold text-slate-800 text-base">Historial de Facturación: <span id="salesHistoryBranchTitle" class="text-sky-600">Zona 7</span></h3>
-              <p class="text-xs text-slate-400">Ventas emitidas en esta sucursal específica</p>
-            </div>
-            <button onclick="VentasModule.exportSalesCSV()" class="text-xs bg-slate-100 hover:bg-slate-200 border border-slate-300 font-semibold px-3 py-1.5 rounded-lg text-slate-700 transition">
-              <i class="fa-solid fa-download mr-1"></i> Descargar Reporte
-            </button>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs">
-              <thead>
-                <tr class="bg-slate-50 text-slate-600 font-semibold uppercase border-y border-slate-200">
-                  <th class="py-2.5 px-3">No. Factura</th>
-                  <th class="py-2.5 px-3">Fecha</th>
-                  <th class="py-2.5 px-3">Cliente</th>
-                  <th class="py-2.5 px-3">Método</th>
-                  <th class="py-2.5 px-3 text-center">Ítems</th>
-                  <th class="py-2.5 px-3 text-right">Total (GTQ)</th>
-                  <th class="py-2.5 px-3 text-center">Acciones</th>
-                </tr>
-              </thead>
-              <tbody id="salesHistoryTableBody" class="divide-y divide-slate-100">
-                <!-- Se llena con ventas emitidas -->
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <!-- ==============================================
-           VISTA 4: GESTOR DE TODAS LAS SUCURSALES
-      =============================================== -->
-      <section id="view-sucursales" class="hidden space-y-6">
-
-        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div class="flex items-center gap-2">
-              <span class="p-2 bg-sky-100 text-sky-800 rounded-xl text-sm">
-                <i class="fa-solid fa-network-wired"></i>
-              </span>
-              <h2 class="text-xl font-bold text-slate-900">Control & Comparativa de Sucursales</h2>
-            </div>
-            <p class="text-xs text-slate-500 mt-1">Supervisión integral de rendimiento, bodegas y metas comerciales de cada tienda STV Color</p>
-          </div>
-
-          <button onclick="App.openNewBranchModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-sm transition flex items-center gap-2">
-            <i class="fa-solid fa-plus-circle"></i> Agregar Nueva Sucursal
-          </button>
-        </div>
-
-        <!-- Tarjetas comparativas de Sucursales -->
-        <div id="branchesCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Se llena con las tarjetas de todas las sucursales -->
-        </div>
-      </section>
-    </main>
-  </div>
-
-  <!-- ==============================================
-       MODALES DEL SISTEMA
-  =============================================== -->
-
-  <!-- MODAL 1: REGISTRAR / EDITAR SUCURSAL NUEVA -->
-  <div id="branchModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200">
-      <div class="bg-[#071828] text-white px-6 py-4 flex items-center justify-between">
-        <h3 id="branchModalTitle" class="font-bold text-base flex items-center gap-2">
-          <i class="fa-solid fa-store text-sky-400"></i> Registrar Nueva Sucursal STV Color
-        </h3>
-        <button onclick="App.closeNewBranchModal()" class="text-slate-300 hover:text-white transition">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <form id="branchForm" onsubmit="App.saveBranch(event)" class="p-6 space-y-4 text-xs">
-        <input type="hidden" id="branchEditId" value="">
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">ID de Sucursal (Único) *</label>
-            <input type="text" id="branchIdInput" required placeholder="Ej: suc-mixco" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-sky-500 font-mono">
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Nombre Comercial de la Tienda *</label>
-            <input type="text" id="branchNameInput" required placeholder="Ej: Sucursal Mixco El Naranjo" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-sky-500 font-medium">
-          </div>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Dirección Completa *</label>
-          <input type="text" id="branchAddressInput" required placeholder="Ej: Calzada San Juan 14-20, Zona 7" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-sky-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Encargado / Administrador *</label>
-            <input type="text" id="branchManagerInput" required placeholder="Ej: Carlos Méndez" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-sky-500">
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Teléfono Directo</label>
-            <input type="text" id="branchPhoneInput" placeholder="Ej: 2471-5500" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-sky-500">
-          </div>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Meta Mensual de Ventas (Q) *</label>
-          <input type="number" id="branchTargetInput" required min="1000" step="100" value="150000" class="w-full p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-sky-500 font-bold text-sky-700">
-          <p class="text-[10px] text-slate-400 mt-1">Esta meta alimentará la barra de progreso y gráficos de esta tienda.</p>
-        </div>
-
-        <div class="pt-3 border-t border-slate-200 flex justify-end gap-3">
-          <button type="button" onclick="App.closeNewBranchModal()" class="px-4 py-2 font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg">Cancelar</button>
-          <button type="submit" class="px-5 py-2 font-bold text-white bg-sky-600 hover:bg-sky-700 rounded-lg shadow">Guardar Sucursal</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 2: CREAR / EDITAR PRODUCTO EN BODEGA -->
-  <div id="productModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden border border-slate-200">
-      <div class="bg-[#0b233a] text-white px-6 py-4 flex items-center justify-between">
-        <h3 id="productModalTitle" class="font-bold text-base flex items-center gap-2">
-          <i class="fa-solid fa-box-open text-sky-400"></i> Registrar Producto en Bodega
-        </h3>
-        <button onclick="BodegaModule.closeProductModal()" class="text-slate-300 hover:text-white transition">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <form id="productForm" onsubmit="BodegaModule.saveProduct(event)" class="p-6 space-y-4 text-xs">
-        <input type="hidden" id="prodEditId" value="">
-
-        <div class="bg-sky-50 p-2.5 rounded-lg border border-sky-100 flex items-center justify-between">
-          <span class="text-sky-800 font-semibold">Asignado a:</span>
-          <span id="productModalBranchLabel" class="font-bold text-sky-900">Sucursal Zona 7</span>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Código / Referencia *</label>
-            <input type="text" id="prodCode" required placeholder="Ej: LAT-BLA-01" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-mono">
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Categoría *</label>
-            <select id="prodCategory" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-medium">
-              <option value="Latex">Latex Gama</option>
-              <option value="Anticorrosivo">Anticorrosivo R15</option>
-              <option value="Diluyentes">Diluyentes / Thinner</option>
-              <option value="Aceite">Aceite Gama</option>
-              <option value="Herramientas">Herramientas & Lijas</option>
-            </select>
-          </div>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Nombre Completo del Producto *</label>
-          <input type="text" id="prodName" required placeholder="Ej: Pintura Latex Gama Blanco Galón" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Stock Actual (Unidades) *</label>
-            <input type="number" id="prodStock" required min="0" step="1" value="10" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-bold">
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Stock Mínimo (Alerta) *</label>
-            <input type="number" id="prodMinStock" required min="1" step="1" value="5" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-bold text-amber-600">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Precio Costo (Q) *</label>
-            <input type="number" id="prodCost" required min="0" step="0.01" placeholder="0.00" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500">
-          </div>
-          <div>
-            <label class="block font-semibold text-slate-700 mb-1">Precio Venta (Q) *</label>
-            <input type="number" id="prodPrice" required min="0" step="0.01" placeholder="0.00" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-bold text-sky-700">
-          </div>
-        </div>
-
-        <div class="pt-3 border-t border-slate-200 flex justify-end gap-3">
-          <button type="button" onclick="BodegaModule.closeProductModal()" class="px-4 py-2 font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg">Cancelar</button>
-          <button type="submit" class="px-5 py-2 font-bold text-white bg-sky-600 hover:bg-sky-700 rounded-lg shadow">Guardar Producto</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 3: TRASLADAR STOCK ENTRE SUCURSALES -->
-  <div id="transferModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-slate-200">
-      <div class="bg-[#0b233a] text-white px-6 py-4 flex items-center justify-between">
-        <h3 class="font-bold text-base flex items-center gap-2">
-          <i class="fa-solid fa-right-left text-sky-400"></i> Traslado entre Sucursales
-        </h3>
-        <button onclick="BodegaModule.closeTransferModal()" class="text-slate-300 hover:text-white transition">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <form id="transferForm" onsubmit="BodegaModule.executeTransfer(event)" class="p-6 space-y-4 text-xs">
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Sucursal Origen (Desde donde sale):</label>
-          <input type="text" id="transferSourceBranch" readonly class="w-full p-2.5 bg-slate-100 border border-slate-300 rounded-lg font-bold text-slate-700">
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Sucursal Destino (Hacia donde ingresa): *</label>
-          <select id="transferTargetBranchSelect" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-semibold text-slate-800">
-            <!-- Otras sucursales -->
-          </select>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Producto a trasladar: *</label>
-          <select id="transferProductSelect" onchange="BodegaModule.onTransferProductSelected(this.value)" required class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-medium">
-            <!-- Productos de la sucursal origen -->
-          </select>
-          <span id="transferAvailableStockLabel" class="text-[11px] text-slate-500 block mt-1">Existencias disponibles: 0</span>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Cantidad de Unidades a transferir: *</label>
-          <input type="number" id="transferQtyInput" required min="1" step="1" value="1" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-bold text-sky-700">
-        </div>
-
-        <div class="pt-3 border-t border-slate-200 flex justify-end gap-3">
-          <button type="button" onclick="BodegaModule.closeTransferModal()" class="px-4 py-2 font-medium text-slate-600 bg-slate-100 rounded-lg">Cancelar</button>
-          <button type="submit" class="px-5 py-2 font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow">Efectuar Traslado</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 4: REGISTRAR CLIENTE RÁPIDO -->
-  <div id="clientModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-slate-200">
-      <div class="bg-[#0b233a] text-white px-6 py-4 flex items-center justify-between">
-        <h3 class="font-bold text-base flex items-center gap-2">
-          <i class="fa-solid fa-user-plus text-sky-400"></i> Registrar Cliente
-        </h3>
-        <button onclick="VentasModule.closeNewClientModal()" class="text-slate-300 hover:text-white transition">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-
-      <form id="clientForm" onsubmit="VentasModule.saveClient(event)" class="p-6 space-y-4 text-xs">
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">NIT o DPI *</label>
-          <input type="text" id="clientNit" required placeholder="Ej: 5489623-1 o CF" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500 font-mono">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Nombre Completo o Razón Social *</label>
-          <input type="text" id="clientName" required placeholder="Ej: Constructora El Bosque S.A." class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Teléfono</label>
-          <input type="text" id="clientPhone" placeholder="Ej: 2478-9900" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500">
-        </div>
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1">Dirección</label>
-          <input type="text" id="clientAddress" placeholder="Ej: Calzada Roosevelt, Ciudad" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-sky-500">
-        </div>
-
-        <div class="pt-3 border-t border-slate-200 flex justify-end gap-3">
-          <button type="button" onclick="VentasModule.closeNewClientModal()" class="px-4 py-2 font-medium text-slate-600 bg-slate-100 rounded-lg">Cancelar</button>
-          <button type="submit" class="px-5 py-2 font-bold text-white bg-sky-600 hover:bg-sky-700 rounded-lg shadow">Guardar Cliente</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 5: FACTURA / TICKET IMPRIMIBLE -->
-  <div id="invoiceModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-200">
-      <div class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between">
-        <h4 class="text-sm font-semibold"><i class="fa-solid fa-print mr-2 text-sky-400"></i>Comprobante de Pago Electrónico</h4>
-        <button onclick="document.getElementById('invoiceModal').classList.add('hidden')" class="text-slate-400 hover:text-white">
-          <i class="fa-solid fa-xmark text-base"></i>
-        </button>
-      </div>
-
-      <div id="printArea" class="p-6 bg-white text-slate-800 font-mono text-xs">
-        <div class="text-center pb-4 border-b border-dashed border-slate-300">
-          <h2 class="text-base font-bold font-sans tracking-wide text-slate-900">STV COLOR GUATEMALA</h2>
-          <p id="printBranchName" class="text-[11px] font-bold text-slate-700">SUCURSAL ZONA 7</p>
-          <p id="printBranchAddress" class="text-[10px] text-slate-500">Calzada San Juan 14-20, Guatemala</p>
-          <p class="text-[10px] text-slate-500">NIT: 9845120-4 | PBX: 2471-0000</p>
-        </div>
-
-        <div class="py-3 border-b border-dashed border-slate-300 space-y-1 text-[11px]">
-          <div class="flex justify-between"><span class="text-slate-500">FACTURA NO:</span><span id="printFactNumber" class="font-bold text-slate-800"></span></div>
-          <div class="flex justify-between"><span class="text-slate-500">FECHA / HORA:</span><span id="printFactDate"></span></div>
-          <div class="flex justify-between"><span class="text-slate-500">CLIENTE:</span><span id="printFactClient" class="font-semibold"></span></div>
-          <div class="flex justify-between"><span class="text-slate-500">NIT / DPI:</span><span id="printFactNit"></span></div>
-          <div class="flex justify-between"><span class="text-slate-500">PAGO:</span><span id="printFactPayment">Efectivo</span></div>
-          <div class="flex justify-between"><span class="text-slate-500">ATENDIÓ:</span><span id="printFactManager">Estev Vásquez</span></div>
-        </div>
-
-        <table class="w-full my-3 text-[11px]">
-          <thead>
-            <tr class="border-b border-dashed border-slate-300 text-slate-500 font-bold">
-              <th class="text-left py-1">CANT</th>
-              <th class="text-left py-1">DESCRIPCIÓN</th>
-              <th class="text-right py-1">TOTAL</th>
-            </tr>
-          </thead>
-          <tbody id="printItemsBody" class="divide-y divide-dashed divide-slate-200">
-            <!-- Items de la venta -->
-          </tbody>
-        </table>
-
-        <div class="pt-3 border-t border-dashed border-slate-300 space-y-1 text-right text-[11px]">
-          <div>Subtotal: <span id="printSubtotal">Q 0.00</span></div>
-          <div>IVA (12%): <span id="printIva">Q 0.00</span></div>
-          <div class="text-sm font-bold pt-1 text-slate-900">TOTAL: <span id="printTotal">Q 0.00</span></div>
-        </div>
-
-        <div class="text-center pt-6 text-[10px] text-slate-500">
-          <p>¡Gracias por su preferencia!</p>
-          <p>Garantía de calidad STV Color</p>
-        </div>
-      </div>
-
-      <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-3">
-        <button onclick="document.getElementById('invoiceModal').classList.add('hidden')" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-white border border-slate-300 rounded-lg">Cerrar</button>
-        <button onclick="window.print()" class="px-5 py-2 text-xs font-bold text-white bg-sky-600 hover:bg-sky-700 rounded-lg shadow flex items-center gap-2">
-          <i class="fa-solid fa-print"></i> Imprimir Ticket
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- NOTIFICACIÓN TOAST -->
-  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl border text-xs font-semibold text-white">
-    <i id="toastIcon" class="fa-solid fa-circle-check text-base"></i>
-    <span id="toastMessage">Operación realizada</span>
-  </div>
-
-  <!-- =======================================================
-       LÓGICA JAVASCRIPT MODULAR (MULTI-SUCURSAL COMPLETA)
-  ======================================================== -->
-  <script>
-    /* ==========================================
-       1. DATA STORE (MULTI-SUCURSAL & PERSISTENCIA)
-       ========================================== */
-    const DB = {
-      KEY_BRANCHES: 'STV_multibranch_branches',
-      KEY_ACTIVE_BRANCH: 'STV_multibranch_active_id',
-      KEY_PRODUCTS: 'STV_multibranch_products',
-      KEY_SALES: 'STV_multibranch_sales',
-      KEY_CLIENTS: 'STV_multibranch_clients',
-
-      init() {
-        if (!localStorage.getItem(this.KEY_BRANCHES)) {
-          this.seedInitialData();
-        }
-      },
-
-      seedInitialData() {
-        const branches = [
-          {
-            id: 'zona-7',
-            name: 'Sucursal Zona 7',
-            address: 'Calzada San Juan 14-20, Zona 7',
-            manager: 'Estev Vásquez',
-            phone: '2471-0000',
-            targetMonthly: 208567.78,
-            color: '#0284c7'
-          },
-          {
-            id: 'aguilar-batres',
-            name: 'Sucursal Aguilar Batres',
-            address: 'Calzada Aguilar Batres 32-10, Zona 11',
-            manager: 'Ana Martínez',
-            phone: '2476-8800',
-            targetMonthly: 185000.00,
-            color: '#10b981'
-          },
-          {
-            id: 'san-juan',
-            name: 'Sucursal San Juan',
-            address: 'Avenida San Juan 8-40, Mixco',
-            manager: 'Rodrigo Gómez',
-            phone: '2490-3300',
-            targetMonthly: 160000.00,
-            color: '#f59e0b'
-          }
-        ];
-
-        const products = [
-          // Inventario Zona 7
-          { id: '1', branchId: 'zona-7', code: 'ESP-003', name: 'Espátula 3 pulgadas', category: 'Herramientas', stock: 76, minStock: 20, cost: 8.50, price: 16.00 },
-          { id: '2', branchId: 'zona-7', code: 'LIJ-MAD', name: 'Lija de Madera No. 80', category: 'Herramientas', stock: 4, minStock: 30, cost: 2.10, price: 5.00 },
-          { id: '3', branchId: 'zona-7', code: 'LAT-BLA-CUB', name: 'Pintura Látex Gama Blanco Cubeta', category: 'Latex', stock: 14, minStock: 5, cost: 220.00, price: 340.00 },
-          { id: '4', branchId: 'zona-7', code: 'ANT-AMA-GAL', name: 'Anticorrosivo R15 Amarillo Galón', category: 'Anticorrosivo', stock: 8, minStock: 6, cost: 95.00, price: 155.00 },
-          { id: '5', branchId: 'zona-7', code: 'ANT-ROJ-GAL', name: 'Anticorrosivo R15 Rojo bermellón Galón', category: 'Anticorrosivo', stock: 4, minStock: 5, cost: 95.00, price: 155.00 },
-          { id: '6', branchId: 'zona-7', code: 'THI-LAC-LIT', name: 'Thinner Laca Litro', category: 'Diluyentes', stock: 24, minStock: 10, cost: 14.00, price: 28.00 },
-          { id: '7', branchId: 'zona-7', code: 'LAT-HUE-GAL', name: 'Pintura Látex Gama Blanco Hueso Galón', category: 'Latex', stock: 12, minStock: 8, cost: 58.00, price: 92.00 },
-          { id: '8', branchId: 'zona-7', code: 'ACE-GAMA-GAL', name: 'Aceite Gama Galón', category: 'Aceite', stock: 9, minStock: 4, cost: 80.00, price: 130.00 },
-
-          // Inventario Aguilar Batres
-          { id: '9', branchId: 'aguilar-batres', code: 'LAT-BLA-CUB', name: 'Pintura Látex Gama Blanco Cubeta', category: 'Latex', stock: 20, minStock: 5, cost: 220.00, price: 340.00 },
-          { id: '10', branchId: 'aguilar-batres', code: 'ANT-AMA-GAL', name: 'Anticorrosivo R15 Amarillo Galón', category: 'Anticorrosivo', stock: 15, minStock: 6, cost: 95.00, price: 155.00 },
-          { id: '11', branchId: 'aguilar-batres', code: 'BRO-4IN', name: 'Brocha Profesional 4 Pulgadas', category: 'Herramientas', stock: 45, minStock: 15, cost: 18.00, price: 35.00 },
-
-          // Inventario San Juan
-          { id: '12', branchId: 'san-juan', code: 'THI-LAC-LIT', name: 'Thinner Laca Litro', category: 'Diluyentes', stock: 30, minStock: 10, cost: 14.00, price: 28.00 },
-          { id: '13', branchId: 'san-juan', code: 'LAT-HUE-GAL', name: 'Pintura Látex Gama Blanco Hueso Galón', category: 'Latex', stock: 18, minStock: 8, cost: 58.00, price: 92.00 }
-        ];
-
-        const sales = [
-          {
-            id: 'FAC-0001',
-            branchId: 'zona-7',
-            date: '2026-10-01 09:15',
-            client: 'Consumidor Final',
-            nit: 'CF',
-            paymentMethod: 'Efectivo',
-            items: [
-              { id: '3', name: 'Pintura Látex Gama Blanco Cubeta', qty: 8, price: 340.00, category: 'Latex' },
-              { id: '4', name: 'Anticorrosivo R15 Amarillo Galón', qty: 5, price: 155.00, category: 'Anticorrosivo' }
-            ],
-            subtotal: 3120.54,
-            iva: 374.46,
-            total: 3495.00
-          },
-          {
-            id: 'FAC-0002',
-            branchId: 'zona-7',
-            date: '2026-10-01 11:40',
-            client: 'Constructora El Bosque S.A.',
-            nit: '349812-4',
-            paymentMethod: 'Transferencia',
-            items: [
-              { id: '6', name: 'Thinner Laca Litro', qty: 3, price: 28.00, category: 'Diluyentes' },
-              { id: '7', name: 'Pintura Látex Gama Blanco Hueso Galón', qty: 1, price: 92.00, category: 'Latex' }
-            ],
-            subtotal: 157.14,
-            iva: 18.86,
-            total: 176.00
-          },
-          {
-            id: 'FAC-1001',
-            branchId: 'aguilar-batres',
-            date: '2026-10-01 10:20',
-            client: 'Taller AutoColor',
-            nit: '887234-9',
-            paymentMethod: 'Tarjeta',
-            items: [
-              { id: '9', name: 'Pintura Látex Gama Blanco Cubeta', qty: 3, price: 340.00, category: 'Latex' }
-            ],
-            subtotal: 910.71,
-            iva: 109.29,
-            total: 1020.00
-          }
-        ];
-
-        const clients = [
-          { id: 'c1', nit: 'CF', name: 'Consumidor Final', phone: 'N/A', address: 'Ciudad' },
-          { id: 'c2', nit: '349812-4', name: 'Constructora El Bosque S.A.', phone: '2470-1122', address: 'Zona 7, Guatemala' },
-          { id: 'c3', nit: '887234-9', name: 'Taller AutoColor', phone: '5544-3322', address: 'Calzada Roosevelt' }
-        ];
-
-        localStorage.setItem(this.KEY_BRANCHES, JSON.stringify(branches));
-        localStorage.setItem(this.KEY_ACTIVE_BRANCH, 'zona-7');
-        localStorage.setItem(this.KEY_PRODUCTS, JSON.stringify(products));
-        localStorage.setItem(this.KEY_SALES, JSON.stringify(sales));
-        localStorage.setItem(this.KEY_CLIENTS, JSON.stringify(clients));
-      },
-
-      getBranches() {
-        return JSON.parse(localStorage.getItem(this.KEY_BRANCHES) || '[]');
-      },
-      saveBranches(branches) {
-        localStorage.setItem(this.KEY_BRANCHES, JSON.stringify(branches));
-      },
-      getActiveBranchId() {
-        return localStorage.getItem(this.KEY_ACTIVE_BRANCH) || 'zona-7';
-      },
-      setActiveBranchId(id) {
-        localStorage.setItem(this.KEY_ACTIVE_BRANCH, id);
-      },
-      getActiveBranch() {
-        const branches = this.getBranches();
-        const activeId = this.getActiveBranchId();
-        return branches.find(b => b.id === activeId) || branches[0];
-      },
-      getProducts() {
-        return JSON.parse(localStorage.getItem(this.KEY_PRODUCTS) || '[]');
-      },
-      saveProducts(products) {
-        localStorage.setItem(this.KEY_PRODUCTS, JSON.stringify(products));
-      },
-      getSales() {
-        return JSON.parse(localStorage.getItem(this.KEY_SALES) || '[]');
-      },
-      saveSales(sales) {
-        localStorage.setItem(this.KEY_SALES, JSON.stringify(sales));
-      },
-      getClients() {
-        return JSON.parse(localStorage.getItem(this.KEY_CLIENTS) || '[]');
-      },
-      saveClients(clients) {
-        localStorage.setItem(this.KEY_CLIENTS, JSON.stringify(clients));
-      }
-    };
-
-    /* ==========================================
-       2. NOTIFICACIONES & UTILIDADES
-       ========================================== */
-    const Notification = {
-      show(message, type = 'success') {
-        const toast = document.getElementById('toastNotification');
-        const icon = document.getElementById('toastIcon');
-        const msg = document.getElementById('toastMessage');
-
-        msg.textContent = message;
-        toast.className = "fixed bottom-5 right-5 z-50 transition-all duration-300 flex items-center gap-3 px-4 py-3 rounded-xl shadow-2xl border text-xs font-semibold text-white pointer-events-auto ";
-
-        if (type === 'success') {
-          toast.classList.add('bg-emerald-600', 'border-emerald-500');
-          icon.className = "fa-solid fa-circle-check text-base";
-        } else if (type === 'error') {
-          toast.classList.add('bg-rose-600', 'border-rose-500');
-          icon.className = "fa-solid fa-circle-exclamation text-base";
-        } else {
-          toast.classList.add('bg-sky-600', 'border-sky-500');
-          icon.className = "fa-solid fa-circle-info text-base";
-        }
-
-        toast.classList.remove('translate-y-24', 'opacity-0');
-        setTimeout(() => {
-          toast.classList.add('translate-y-24', 'opacity-0');
-        }, 3000);
-      }
-    };
-
-    const ExportUtils = {
-      copyTable(tableId) {
-        const table = document.getElementById(tableId);
-        let text = '';
-        for (let row of table.rows) {
-          let rowData = [];
-          for (let cell of row.cells) rowData.push(cell.innerText.trim());
-          text += rowData.join('\t') + '\n';
-        }
-        const temp = document.createElement('textarea');
-        temp.value = text;
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand('copy');
-        document.body.removeChild(temp);
-        Notification.show('Tabla copiada al portapapeles.');
-      },
-      exportCSV() {
-        const branch = DB.getActiveBranch();
-        const products = DB.getProducts().filter(p => p.branchId === branch.id);
-        let csv = 'Sucursal,Codigo,Producto,Stock,Minimo,Costo,Precio\n';
-        products.forEach(p => {
-          csv += `"${branch.name}","${p.code}","${p.name}",${p.stock},${p.minStock},${p.cost},${p.price}\n`;
-        });
-        this.download(csv, `stock_${branch.id}.csv`, 'text/csv');
-      },
-      exportExcel() {
-        this.exportCSV();
-        Notification.show('Generando archivo estructurado para Excel...');
-      },
-      download(content, fileName, mimeType) {
-        const a = document.createElement('a');
-        const blob = new Blob([content], { type: mimeType });
-        a.href = URL.createObjectURL(blob);
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-      }
-    };
-
-    /* ==========================================
-       3. MÓDULO DASHBOARD (SUCURSAL ACTIVA)
-       ========================================== */
-    const DashboardModule = {
-      chartInstance: null,
-
-      init() {
-        this.renderBranchHeaderInfo();
-        this.renderMetrics();
-        this.renderCategoryChart();
-        this.renderTopProducts();
-        this.renderStockAlerts();
-      },
-
-      renderBranchHeaderInfo() {
-        const b = DB.getActiveBranch();
-        document.getElementById('dashBranchTitle').textContent = b.name;
-        document.getElementById('dashBranchSubtitle').innerHTML = `Supervisada por: <strong class="text-slate-700 font-semibold">${b.manager}</strong> | ${b.address}`;
-        document.getElementById('chartBranchBadge').textContent = b.name;
-      },
-
-      renderMetrics() {
-        const branch = DB.getActiveBranch();
-        const sales = DB.getSales().filter(s => s.branchId === branch.id);
-        const total = sales.reduce((acc, curr) => acc + (Number(curr.total) || 0), 0);
-        const count = sales.length;
-        const avg = count > 0 ? (total / count) : 0;
-
-        const fmtQ = (val) => 'Q ' + val.toLocaleString('es-GT', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-        document.getElementById('metricTotalHoy').textContent = fmtQ(total);
-        document.getElementById('metricTotalMes').textContent = fmtQ(total);
-        document.getElementById('metricPromedio').textContent = fmtQ(avg);
-        document.getElementById('metricVentasCount').textContent = `${count} Ventas registradas`;
-
-        // Metas
-        const metaTarget = branch.targetMonthly || 200000;
-        const pct = metaTarget > 0 ? ((total / metaTarget) * 100).toFixed(2) : 0;
-        const remaining = Math.max(0, metaTarget - total);
-
-        document.getElementById('metricMetaMonto').textContent = fmtQ(metaTarget);
-        document.getElementById('metricMetaAlcanzadoMonto').textContent = fmtQ(total);
-        document.getElementById('metricPorcentajeText').textContent = `${pct}%`;
-        document.getElementById('metricProgressBar').style.width = `${Math.min(pct, 100)}%`;
-        document.getElementById('metricFaltanteLabel').textContent = `Faltante para meta: ${fmtQ(remaining)} (${Math.max(0, 100 - pct).toFixed(2)}%)`;
-      },
-
-      renderCategoryChart() {
-        const ctx = document.getElementById('categoryChart').getContext('2d');
-        const branch = DB.getActiveBranch();
-        const sales = DB.getSales().filter(s => s.branchId === branch.id);
-
-        const categoryCounts = {
-          'Anticorrosivo R15': 0,
-          'Látex Gama': 0,
-          'Diluyentes': 0,
-          'Aceite Gama': 0,
-          'Herramientas': 0
-        };
-
-        let totalUnits = 0;
-        sales.forEach(sale => {
-          sale.items?.forEach(item => {
-            const cat = item.category || 'Otros';
-            totalUnits += Number(item.qty) || 0;
-            if (cat === 'Anticorrosivo') categoryCounts['Anticorrosivo R15'] += item.qty;
-            else if (cat === 'Latex') categoryCounts['Látex Gama'] += item.qty;
-            else if (cat === 'Diluyentes') categoryCounts['Diluyentes'] += item.qty;
-            else if (cat === 'Aceite') categoryCounts['Aceite Gama'] += item.qty;
-            else categoryCounts['Herramientas'] += item.qty;
-          });
-        });
-
-        // Si es una sucursal nueva y aún no vende, mostrar demo de distribución estimada
-        if (totalUnits === 0) {
-          categoryCounts['Anticorrosivo R15'] = 5;
-          categoryCounts['Látex Gama'] = 4;
-          categoryCounts['Diluyentes'] = 2;
-          totalUnits = 11;
-        }
-
-        document.getElementById('chartTotalItemsLabel').textContent = `Total Despachado: ${totalUnits} u.`;
-
-        if (this.chartInstance) {
-          this.chartInstance.destroy();
-        }
-
-        this.chartInstance = new Chart(ctx, {
-          type: 'doughnut',
-          data: {
-            labels: Object.keys(categoryCounts),
-            datasets: [{
-              data: Object.values(categoryCounts),
-              backgroundColor: ['#38bdf8', '#0284c7', '#34d399', '#fbbf24', '#a78bfa'],
-              borderWidth: 2,
-              borderColor: '#ffffff'
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: 'right',
-                labels: {
-                  boxWidth: 12,
-                  font: { family: 'Inter', size: 11 }
-                }
-              }
-            }
-          }
-        });
-      },
-
-      renderTopProducts() {
-        const branch = DB.getActiveBranch();
-        const sales = DB.getSales().filter(s => s.branchId === branch.id);
-        const map = {};
-
-        sales.forEach(s => {
-          s.items?.forEach(item => {
-            map[item.name] = (map[item.name] || 0) + item.qty;
-          });
-        });
-
-        let sorted = Object.entries(map).sort((a, b) => b[1] - a[1]);
-        if (sorted.length === 0) {
-          sorted = [
-            ['Pintura Látex Gama Blanco Cubeta', 8],
-            ['Anticorrosivo R15 Amarillo Galón', 5],
-            ['Thinner Laca Litro', 3]
-          ];
-        }
-
-        const tbody = document.getElementById('dashTopProductsTableBody');
-        tbody.innerHTML = sorted.slice(0, 5).map(([name, qty], idx) => `
-          <tr class="hover:bg-slate-50 transition">
-            <td class="py-2.5 px-2 font-black text-sky-700">#${idx + 1}</td>
-            <td class="py-2.5 px-2 font-medium text-slate-700">${name}</td>
-            <td class="py-2.5 px-2 text-right font-bold text-slate-900">${qty}</td>
-          </tr>
-        `).join('');
-      },
-
-      renderStockAlerts() {
-        const branch = DB.getActiveBranch();
-        const products = DB.getProducts().filter(p => p.branchId === branch.id);
-        const tbody = document.getElementById('dashStockAlertsTableBody');
-
-        if (products.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="7" class="py-4 text-center text-slate-400">Esta sucursal aún no tiene productos en bodega.</td></tr>`;
-          document.getElementById('headerAlertsCount').textContent = '0';
-          return;
-        }
-
-        let alertsCount = 0;
-        tbody.innerHTML = products.map(p => {
-          const diff = p.stock - p.minStock;
-          let badge = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">OK</span>`;
-          if (p.stock === 0) {
-            badge = `<span class="bg-rose-100 text-rose-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Agotado</span>`;
-            alertsCount++;
-          } else if (p.stock <= p.minStock) {
-            badge = `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded-full">Bajo Stock</span>`;
-            alertsCount++;
-          }
-
-          return `
-            <tr class="hover:bg-slate-50 transition">
-              <td class="py-2 px-3 text-slate-600 font-medium">${branch.name}</td>
-              <td class="py-2 px-2 text-slate-400 font-mono">${p.code}</td>
-              <td class="py-2 px-3 font-medium text-slate-800">${p.name}</td>
-              <td class="py-2 px-2 text-center font-bold ${p.stock <= p.minStock ? 'text-rose-600' : 'text-slate-700'}">${p.stock}</td>
-              <td class="py-2 px-2 text-center text-slate-400">${p.minStock}</td>
-              <td class="py-2 px-2 text-center font-semibold ${diff < 0 ? 'text-rose-600' : 'text-slate-600'}">${diff}</td>
-              <td class="py-2 px-3 text-center">${badge}</td>
-            </tr>
-          `;
-        }).join('');
-
-        document.getElementById('headerAlertsCount').textContent = alertsCount;
-      },
-
-      searchAlertsTable(term) {
-        const filter = term.toLowerCase();
-        const rows = document.querySelectorAll('#dashStockAlertsTableBody tr');
-        rows.forEach(r => {
-          r.style.display = r.textContent.toLowerCase().includes(filter) ? '' : 'none';
-        });
-      }
-    };
-
-    /* ==========================================
-       4. MÓDULO BODEGA (BODEGA.JS)
-       ========================================== */
-    const BodegaModule = {
-      init() {
-        const branch = DB.getActiveBranch();
-        document.getElementById('bodegaBranchNameHeading').textContent = branch.name;
-        this.renderInventoryTable();
-        this.updateStats();
-      },
-
-      updateStats() {
-        const branch = DB.getActiveBranch();
-        const products = DB.getProducts().filter(p => p.branchId === branch.id);
-        const totalItems = products.length;
-        const totalUnits = products.reduce((acc, p) => acc + (Number(p.stock) || 0), 0);
-        const totalValue = products.reduce((acc, p) => acc + ((Number(p.stock) || 0) * (Number(p.price) || 0)), 0);
-        const alerts = products.filter(p => p.stock <= p.minStock).length;
-
-        document.getElementById('statTotalItems').textContent = totalItems;
-        document.getElementById('statTotalUnits').textContent = totalUnits;
-        document.getElementById('statTotalValue').textContent = 'Q ' + totalValue.toLocaleString('es-GT', { minimumFractionDigits: 2 });
-        document.getElementById('statTotalAlerts').textContent = alerts;
-        document.getElementById('sidebarStockCountBadge').textContent = totalUnits;
-      },
-
-      renderInventoryTable(filterList = null) {
-        const branch = DB.getActiveBranch();
-        const products = filterList || DB.getProducts().filter(p => p.branchId === branch.id);
-        const tbody = document.getElementById('inventoryTableBody');
-
-        if (products.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400">No hay productos registrados en la bodega de ${branch.name}.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = products.map(p => {
-          let statusBadge = `<span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-semibold">Óptimo</span>`;
-          if (p.stock === 0) {
-            statusBadge = `<span class="bg-rose-50 text-rose-700 border border-rose-200 px-2 py-0.5 rounded text-[10px] font-semibold">Agotado</span>`;
-          } else if (p.stock <= p.minStock) {
-            statusBadge = `<span class="bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded text-[10px] font-semibold">Bajo Stock</span>`;
-          }
-
-          return `
-            <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-              <td class="py-2.5 px-3 font-mono font-bold text-slate-500">${p.code}</td>
-              <td class="py-2.5 px-3 font-bold text-slate-800">${p.name}</td>
-              <td class="py-2.5 px-3 text-slate-500">${p.category}</td>
-              <td class="py-2.5 px-3 text-center font-black ${p.stock <= p.minStock ? 'text-rose-600' : 'text-slate-800'}">${p.stock}</td>
-              <td class="py-2.5 px-3 text-center text-slate-400 font-medium">${p.minStock}</td>
-              <td class="py-2.5 px-3 text-right text-slate-600">Q ${Number(p.cost).toFixed(2)}</td>
-              <td class="py-2.5 px-3 text-right font-extrabold text-sky-700">Q ${Number(p.price).toFixed(2)}</td>
-              <td class="py-2.5 px-3 text-center">${statusBadge}</td>
-              <td class="py-2.5 px-3 text-center space-x-1">
-                <button onclick="BodegaModule.openProductModal('${p.id}')" title="Editar" class="p-1.5 text-sky-600 hover:bg-sky-50 rounded">
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button onclick="BodegaModule.deleteProduct('${p.id}')" title="Eliminar" class="p-1.5 text-rose-500 hover:bg-rose-50 rounded">
-                  <i class="fa-solid fa-trash-can"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      filterProducts() {
-        const branch = DB.getActiveBranch();
-        const query = document.getElementById('inventorySearch').value.toLowerCase();
-        const cat = document.getElementById('categoryFilter').value;
-        const stockMode = document.getElementById('stockFilter').value;
-
-        let list = DB.getProducts().filter(p => p.branchId === branch.id);
-
-        if (query) {
-          list = list.filter(p => p.name.toLowerCase().includes(query) || p.code.toLowerCase().includes(query));
-        }
-        if (cat !== 'ALL') {
-          list = list.filter(p => p.category.toLowerCase().includes(cat.toLowerCase()));
-        }
-        if (stockMode === 'LOW') {
-          list = list.filter(p => p.stock <= p.minStock);
-        } else if (stockMode === 'ZERO') {
-          list = list.filter(p => p.stock === 0);
-        }
-
-        this.renderInventoryTable(list);
-      },
-
-      filterCriticalStock() {
-        App.navigateTo('bodega');
-        document.getElementById('stockFilter').value = 'LOW';
-        this.filterProducts();
-        Notification.show('Filtrando productos en estado crítico de reposición.', 'info');
-      },
-
-      openProductModal(prodId = null) {
-        const branch = DB.getActiveBranch();
-        document.getElementById('productModalBranchLabel').textContent = branch.name;
-        const form = document.getElementById('productForm');
-        form.reset();
-
-        if (prodId) {
-          const p = DB.getProducts().find(item => item.id == prodId);
-          if (p) {
-            document.getElementById('prodEditId').value = p.id;
-            document.getElementById('prodCode').value = p.code;
-            document.getElementById('prodCategory').value = p.category;
-            document.getElementById('prodName').value = p.name;
-            document.getElementById('prodStock').value = p.stock;
-            document.getElementById('prodMinStock').value = p.minStock;
-            document.getElementById('prodCost').value = p.cost;
-            document.getElementById('prodPrice').value = p.price;
-            document.getElementById('productModalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square text-sky-400"></i> Editar Producto';
-          }
-        } else {
-          document.getElementById('prodEditId').value = '';
-          document.getElementById('productModalTitle').innerHTML = '<i class="fa-solid fa-box-open text-sky-400"></i> Registrar Producto en Bodega';
-        }
-
-        document.getElementById('productModal').classList.remove('hidden');
-      },
-
-      closeProductModal() {
-        document.getElementById('productModal').classList.add('hidden');
-      },
-
-      saveProduct(e) {
-        e.preventDefault();
-        const branch = DB.getActiveBranch();
-        const editId = document.getElementById('prodEditId').value;
-        const products = DB.getProducts();
-
-        const productData = {
-          id: editId ? editId : 'p-' + Date.now().toString().slice(-5),
-          branchId: branch.id,
-          code: document.getElementById('prodCode').value.trim(),
-          category: document.getElementById('prodCategory').value,
-          name: document.getElementById('prodName').value.trim(),
-          stock: parseInt(document.getElementById('prodStock').value, 10),
-          minStock: parseInt(document.getElementById('prodMinStock').value, 10),
-          cost: parseFloat(document.getElementById('prodCost').value),
-          price: parseFloat(document.getElementById('prodPrice').value)
-        };
-
-        if (editId) {
-          const idx = products.findIndex(p => p.id == editId);
-          if (idx !== -1) products[idx] = productData;
-          Notification.show('Producto actualizado en la bodega.');
-        } else {
-          products.unshift(productData);
-          Notification.show(`Producto agregado al inventario de ${branch.name}.`);
-        }
-
-        DB.saveProducts(products);
-        this.closeProductModal();
-        this.renderInventoryTable();
-        this.updateStats();
-        DashboardModule.init();
-        VentasModule.renderPOSCatalog();
-      },
-
-      deleteProduct(prodId) {
-        const products = DB.getProducts().filter(p => p.id != prodId);
-        DB.saveProducts(products);
-        this.renderInventoryTable();
-        this.updateStats();
-        DashboardModule.init();
-        VentasModule.renderPOSCatalog();
-        Notification.show('Producto retirado de la bodega.', 'info');
-      },
-
-      /* TRASLADO ENTRE TIENDAS */
-      openTransferModal() {
-        const branch = DB.getActiveBranch();
-        const branches = DB.getBranches().filter(b => b.id !== branch.id);
-        const products = DB.getProducts().filter(p => p.branchId === branch.id && p.stock > 0);
-
-        if (branches.length === 0) {
-          Notification.show('No hay otras sucursales registradas para transferir.', 'error');
-          return;
-        }
-
-        if (products.length === 0) {
-          Notification.show('No hay productos con existencias disponibles para transferir en esta tienda.', 'error');
-          return;
-        }
-
-        document.getElementById('transferSourceBranch').value = branch.name;
-
-        const targetSelect = document.getElementById('transferTargetBranchSelect');
-        targetSelect.innerHTML = branches.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
-
-        const prodSelect = document.getElementById('transferProductSelect');
-        prodSelect.innerHTML = products.map(p => `<option value="${p.id}">${p.name} (Stock: ${p.stock})</option>`).join('');
-
-        this.onTransferProductSelected(products[0].id);
-        document.getElementById('transferModal').classList.remove('hidden');
-      },
-
-      closeTransferModal() {
-        document.getElementById('transferModal').classList.add('hidden');
-      },
-
-      onTransferProductSelected(prodId) {
-        const prod = DB.getProducts().find(p => p.id == prodId);
-        if (prod) {
-          document.getElementById('transferAvailableStockLabel').textContent = `Existencias disponibles: ${prod.stock} unidades`;
-          document.getElementById('transferQtyInput').max = prod.stock;
-        }
-      },
-
-      executeTransfer(e) {
-        e.preventDefault();
-        const sourceBranch = DB.getActiveBranch();
-        const targetBranchId = document.getElementById('transferTargetBranchSelect').value;
-        const prodId = document.getElementById('transferProductSelect').value;
-        const qty = parseInt(document.getElementById('transferQtyInput').value, 10);
-
-        const products = DB.getProducts();
-        const sourceProd = products.find(p => p.id == prodId);
-
-        if (!sourceProd || sourceProd.stock < qty) {
-          Notification.show('La cantidad ingresada supera el stock disponible.', 'error');
-          return;
-        }
-
-        // Descontar en tienda origen
-        sourceProd.stock -= qty;
-
-        // Sumar o crear en tienda destino
-        let targetProd = products.find(p => p.branchId === targetBranchId && p.code === sourceProd.code);
-        if (targetProd) {
-          targetProd.stock += qty;
-        } else {
-          products.push({
-            id: 'p-' + Date.now().toString().slice(-5),
-            branchId: targetBranchId,
-            code: sourceProd.code,
-            name: sourceProd.name,
-            category: sourceProd.category,
-            stock: qty,
-            minStock: sourceProd.minStock,
-            cost: sourceProd.cost,
-            price: sourceProd.price
-          });
-        }
-
-        DB.saveProducts(products);
-        this.closeTransferModal();
-        this.renderInventoryTable();
-        this.updateStats();
-        DashboardModule.init();
-        VentasModule.renderPOSCatalog();
-
-        const targetBranch = DB.getBranches().find(b => b.id === targetBranchId);
-        Notification.show(`Se transfirieron ${qty} unidades a ${targetBranch.name} exitosamente.`);
-      }
-    };
-
-    /* ==========================================
-       5. MÓDULO VENTAS & POS (VENTAS.JS)
-       ========================================== */
-    const VentasModule = {
-      cart: [],
-
-      init() {
-        const branch = DB.getActiveBranch();
-        document.getElementById('posBranchNameLabel').textContent = branch.name;
-        document.getElementById('posCartBranchHeader').textContent = branch.name;
-        document.getElementById('salesHistoryBranchTitle').textContent = branch.name;
-
-        this.renderPOSCatalog();
-        this.loadClients();
-        this.renderSalesHistory();
-      },
-
-      switchSubView(view) {
-        const isPos = view === 'pos';
-        document.getElementById('subtab-pos').className = isPos 
-          ? "px-4 py-2 font-bold text-xs rounded-xl bg-sky-600 text-white shadow-sm transition"
-          : "px-4 py-2 font-bold text-xs rounded-xl text-slate-600 hover:bg-slate-200 transition";
-        document.getElementById('subtab-historial').className = !isPos 
-          ? "px-4 py-2 font-bold text-xs rounded-xl bg-sky-600 text-white shadow-sm transition"
-          : "px-4 py-2 font-bold text-xs rounded-xl text-slate-600 hover:bg-slate-200 transition";
-
-        document.getElementById('subview-pos').classList.toggle('hidden', !isPos);
-        document.getElementById('subview-historial').classList.toggle('hidden', isPos);
-      },
-
-      loadClients() {
-        const clients = DB.getClients();
-        const select = document.getElementById('posClientSelect');
-        select.innerHTML = clients.map(c => `<option value="${c.id}">${c.name} (${c.nit})</option>`).join('');
-      },
-
-      renderPOSCatalog(filter = '') {
-        const branch = DB.getActiveBranch();
-        const products = DB.getProducts().filter(p => p.branchId === branch.id);
-        const container = document.getElementById('posProductsGrid');
-        const term = filter.toLowerCase();
-
-        const filtered = products.filter(p => p.name.toLowerCase().includes(term) || p.code.toLowerCase().includes(term));
-
-        if (filtered.length === 0) {
-          container.innerHTML = `<div class="col-span-3 text-center py-10 text-xs text-slate-400">No hay productos disponibles en esta tienda.</div>`;
-          return;
-        }
-
-        container.innerHTML = filtered.map(p => `
-          <div onclick="VentasModule.addToCart('${p.id}')" class="bg-slate-50 hover:bg-sky-50/70 p-3 rounded-xl border border-slate-200 hover:border-sky-300 transition cursor-pointer flex flex-col justify-between group">
-            <div>
-              <span class="text-[9px] font-bold text-sky-600 uppercase">${p.category}</span>
-              <h4 class="font-bold text-xs text-slate-800 line-clamp-2 mt-0.5 group-hover:text-sky-700">${p.name}</h4>
-            </div>
-            <div class="mt-3 flex items-center justify-between">
-              <div>
-                <span class="text-[10px] text-slate-400 block">Stock: ${p.stock}</span>
-                <span class="font-black text-xs text-slate-900">Q ${Number(p.price).toFixed(2)}</span>
-              </div>
-              <button class="w-7 h-7 bg-white group-hover:bg-sky-600 group-hover:text-white rounded-lg border border-slate-200 flex items-center justify-center text-xs text-slate-600 transition shadow-sm">
-                <i class="fa-solid fa-plus"></i>
-              </button>
-            </div>
-          </div>
-        `).join('');
-      },
-
-      filterPOSCatalog(val) {
-        this.renderPOSCatalog(val);
-      },
-
-      addToCart(prodId) {
-        const prod = DB.getProducts().find(p => p.id == prodId);
-        if (!prod || prod.stock <= 0) {
-          Notification.show(`El producto no cuenta con existencias en esta tienda.`, 'error');
-          return;
-        }
-
-        const item = this.cart.find(i => i.id == prodId);
-        if (item) {
-          if (item.qty + 1 > prod.stock) {
-            Notification.show(`Stock insuficiente en bodega (${prod.stock} disponibles).`, 'error');
-            return;
-          }
-          item.qty++;
-        } else {
-          this.cart.push({
-            id: prod.id,
-            name: prod.name,
-            price: Number(prod.price),
-            category: prod.category,
-            qty: 1
-          });
-        }
-
-        this.renderCart();
-        Notification.show(`Agregado al ticket: ${prod.name}`);
-      },
-
-      updateCartQty(prodId, val) {
-        const prod = DB.getProducts().find(p => p.id == prodId);
-        const item = this.cart.find(i => i.id == prodId);
-        if (!prod || !item) return;
-
-        const qty = parseInt(val, 10);
-        if (qty <= 0) {
-          this.removeFromCart(prodId);
-          return;
-        }
-        if (qty > prod.stock) {
-          Notification.show(`Solo dispones de ${prod.stock} unidades en esta tienda.`, 'error');
-          item.qty = prod.stock;
-        } else {
-          item.qty = qty;
-        }
-        this.renderCart();
-      },
-
-      removeFromCart(prodId) {
-        this.cart = this.cart.filter(i => i.id != prodId);
-        this.renderCart();
-      },
-
-      clearCart() {
-        this.cart = [];
-        this.renderCart();
-      },
-
-      renderCart() {
-        const tbody = document.getElementById('posCartTableBody');
-        const emptyNotice = document.getElementById('posCartEmptyNotice');
-
-        if (this.cart.length === 0) {
-          tbody.innerHTML = '';
-          emptyNotice.classList.remove('hidden');
-          this.updateTotals(0);
-          return;
-        }
-
-        emptyNotice.classList.add('hidden');
-        let subtotal = 0;
-
-        tbody.innerHTML = this.cart.map(item => {
-          const itemTotal = item.qty * item.price;
-          subtotal += itemTotal;
-          return `
-            <tr class="hover:bg-slate-50 transition">
-              <td class="py-2 pr-1 font-medium text-slate-800 text-[11px]">${item.name}</td>
-              <td class="py-2 px-1 text-center">
-                <input type="number" min="1" value="${item.qty}" onchange="VentasModule.updateCartQty('${item.id}', this.value)" class="w-12 text-center text-xs p-1 border border-slate-300 rounded focus:ring-1 focus:ring-sky-500">
-              </td>
-              <td class="py-2 pl-1 text-right font-bold text-slate-800 text-[11px]">Q ${itemTotal.toFixed(2)}</td>
-              <td class="py-2 text-right">
-                <button onclick="VentasModule.removeFromCart('${item.id}')" class="text-rose-400 hover:text-rose-600 text-xs">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-
-        this.updateTotals(subtotal);
-      },
-
-      updateTotals(total) {
-        const iva = total * 0.12;
-        const subtotal = total - iva;
-        document.getElementById('posSubtotalLabel').textContent = 'Q ' + subtotal.toLocaleString('es-GT', { minimumFractionDigits: 2 });
-        document.getElementById('posIvaLabel').textContent = 'Q ' + iva.toLocaleString('es-GT', { minimumFractionDigits: 2 });
-        document.getElementById('posTotalLabel').textContent = 'Q ' + total.toLocaleString('es-GT', { minimumFractionDigits: 2 });
-      },
-
-      checkout() {
-        if (this.cart.length === 0) {
-          Notification.show('Agrega al menos un artículo para emitir la factura.', 'error');
-          return;
-        }
-
-        const branch = DB.getActiveBranch();
-        const clientSelect = document.getElementById('posClientSelect');
-        const client = DB.getClients().find(c => c.id === clientSelect.value) || { name: 'Consumidor Final', nit: 'CF' };
-        const paymentMethod = document.getElementById('posPaymentMethod').value;
-
-        const products = DB.getProducts();
-        const sales = DB.getSales();
-
-        // 1. Descontar inventario de la tienda activa
-        for (const item of this.cart) {
-          const prod = products.find(p => p.id == item.id);
-          if (prod) {
-            prod.stock = Math.max(0, prod.stock - item.qty);
-          }
-        }
-
-        // 2. Crear Registro de Venta
-        const total = this.cart.reduce((sum, i) => sum + (i.qty * i.price), 0);
-        const saleId = 'FAC-' + (sales.length + 1).toString().padStart(4, '0');
-        const now = new Date();
-        const dateStr = now.toISOString().slice(0, 10) + ' ' + now.toTimeString().slice(0, 5);
-
-        const newSale = {
-          id: saleId,
-          branchId: branch.id,
-          date: dateStr,
-          client: client.name,
-          nit: client.nit,
-          paymentMethod: paymentMethod,
-          items: [...this.cart],
-          subtotal: total / 1.12,
-          iva: total - (total / 1.12),
-          total: total
-        };
-
-        sales.unshift(newSale);
-
-        DB.saveProducts(products);
-        DB.saveSales(sales);
-
-        // Actualizar vistas
-        BodegaModule.renderInventoryTable();
-        BodegaModule.updateStats();
-        DashboardModule.init();
-        this.renderPOSCatalog();
-        this.renderSalesHistory();
-
-        this.showInvoiceTicket(newSale);
-        this.clearCart();
-        Notification.show(`Factura ${saleId} emitida con éxito en ${branch.name}.`);
-      },
-
-      showInvoiceTicket(sale) {
-        const branch = DB.getActiveBranch();
-        document.getElementById('printBranchName').textContent = branch.name.toUpperCase();
-        document.getElementById('printBranchAddress').textContent = branch.address;
-        document.getElementById('printFactNumber').textContent = sale.id;
-        document.getElementById('printFactDate').textContent = sale.date;
-        document.getElementById('printFactClient').textContent = sale.client;
-        document.getElementById('printFactNit').textContent = sale.nit;
-        document.getElementById('printFactPayment').textContent = sale.paymentMethod;
-        document.getElementById('printFactManager').textContent = branch.manager;
-
-        const tbody = document.getElementById('printItemsBody');
-        tbody.innerHTML = sale.items.map(item => `
-          <tr>
-            <td class="py-1">${item.qty}</td>
-            <td class="py-1">${item.name}</td>
-            <td class="py-1 text-right">Q ${(item.qty * item.price).toFixed(2)}</td>
-          </tr>
-        `).join('');
-
-        document.getElementById('printSubtotal').textContent = 'Q ' + sale.subtotal.toFixed(2);
-        document.getElementById('printIva').textContent = 'Q ' + sale.iva.toFixed(2);
-        document.getElementById('printTotal').textContent = 'Q ' + sale.total.toFixed(2);
-
-        document.getElementById('invoiceModal').classList.remove('hidden');
-      },
-
-      renderSalesHistory() {
-        const branch = DB.getActiveBranch();
-        const sales = DB.getSales().filter(s => s.branchId === branch.id);
-        const tbody = document.getElementById('salesHistoryTableBody');
-
-        if (sales.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400">No hay comprobantes emitidos en esta tienda.</td></tr>`;
-          return;
-        }
-
-        tbody.innerHTML = sales.map(s => {
-          const itemsCount = s.items.reduce((sum, i) => sum + i.qty, 0);
-          return `
-            <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-              <td class="py-2.5 px-3 font-mono font-bold text-sky-700">${s.id}</td>
-              <td class="py-2.5 px-3 text-slate-500">${s.date}</td>
-              <td class="py-2.5 px-3 font-medium text-slate-800">${s.client} <span class="text-slate-400 text-[10px]">(${s.nit})</span></td>
-              <td class="py-2.5 px-3 text-slate-600">${s.paymentMethod || 'Efectivo'}</td>
-              <td class="py-2.5 px-3 text-center">${itemsCount} u.</td>
-              <td class="py-2.5 px-3 text-right font-black text-slate-900">Q ${Number(s.total).toFixed(2)}</td>
-              <td class="py-2.5 px-3 text-center">
-                <button onclick="VentasModule.reprintSale('${s.id}')" title="Reimprimir Ticket" class="text-sky-600 hover:text-sky-800 p-1">
-                  <i class="fa-solid fa-file-invoice"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      reprintSale(saleId) {
-        const sale = DB.getSales().find(s => s.id === saleId);
-        if (sale) this.showInvoiceTicket(sale);
-      },
-
-      openNewClientModal() {
-        document.getElementById('clientForm').reset();
-        document.getElementById('clientModal').classList.remove('hidden');
-      },
-      closeNewClientModal() {
-        document.getElementById('clientModal').classList.add('hidden');
-      },
-      saveClient(e) {
-        e.preventDefault();
-        const clients = DB.getClients();
-        const newClient = {
-          id: 'c-' + Date.now().toString().slice(-4),
-          nit: document.getElementById('clientNit').value.trim(),
-          name: document.getElementById('clientName').value.trim(),
-          phone: document.getElementById('clientPhone').value.trim() || 'N/A',
-          address: document.getElementById('clientAddress').value.trim() || 'Ciudad'
-        };
-        clients.push(newClient);
-        DB.saveClients(clients);
-        this.closeNewClientModal();
-        this.loadClients();
-        Notification.show(`Cliente "${newClient.name}" registrado.`);
-      },
-      exportSalesCSV() {
-        const branch = DB.getActiveBranch();
-        const sales = DB.getSales().filter(s => s.branchId === branch.id);
-        let csv = 'Factura,Fecha,Sucursal,Cliente,NIT,Total\n';
-        sales.forEach(s => {
-          csv += `"${s.id}","${s.date}","${branch.name}","${s.client}","${s.nit}","${s.total}"\n`;
-        });
-        ExportUtils.download(csv, `ventas_${branch.id}.csv`, 'text/csv');
-      }
-    };
-
-    /* ==========================================
-       6. MÓDULO SUCURSALES (CONTROL GLOBAL)
-       ========================================== */
-    const SucursalesModule = {
-      renderCards() {
-        const branches = DB.getBranches();
-        const products = DB.getProducts();
-        const sales = DB.getSales();
-        const container = document.getElementById('branchesCardsContainer');
-        const activeId = DB.getActiveBranchId();
-
-        container.innerHTML = branches.map(b => {
-          const branchProducts = products.filter(p => p.branchId === b.id);
-          const totalStock = branchProducts.reduce((acc, p) => acc + (Number(p.stock) || 0), 0);
-          const branchSales = sales.filter(s => s.branchId === b.id);
-          const totalSales = branchSales.reduce((acc, s) => acc + (Number(s.total) || 0), 0);
-          const pct = ((totalSales / b.targetMonthly) * 100).toFixed(1);
-          const isActive = b.id === activeId;
-
-          return `
-            <div class="bg-white rounded-2xl p-5 border ${isActive ? 'border-sky-500 shadow-md ring-2 ring-sky-500/20' : 'border-slate-200 shadow-sm'} flex flex-col justify-between">
-              <div>
-                <div class="flex items-start justify-between">
-                  <div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tienda STV Color</span>
-                    <h3 class="text-base font-black text-slate-900 mt-0.5">${b.name}</h3>
-                  </div>
-                  ${isActive 
-                    ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-300">Activa</span>' 
-                    : `<button onclick="App.switchBranch('${b.id}')" class="text-xs bg-slate-100 hover:bg-sky-600 hover:text-white px-2.5 py-1 rounded-lg font-bold text-slate-700 transition">Seleccionar</button>`
-                  }
-                </div>
-
-                <div class="my-4 p-3 bg-slate-50 rounded-xl space-y-1.5 text-xs text-slate-600">
-                  <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-location-dot text-slate-400 w-3.5"></i>
-                    <span class="truncate">${b.address}</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-user-tie text-slate-400 w-3.5"></i>
-                    <span>${b.manager}</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-phone text-slate-400 w-3.5"></i>
-                    <span>${b.phone || 'PBX STV'}</span>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2 text-xs mb-3">
-                  <div class="p-2.5 rounded-lg bg-sky-50 border border-sky-100">
-                    <span class="text-[10px] text-sky-700 font-semibold block">Ventas Mes</span>
-                    <strong class="text-sm font-black text-sky-950">Q ${totalSales.toLocaleString('es-GT', { minimumFractionDigits: 2 })}</strong>
-                  </div>
-                  <div class="p-2.5 rounded-lg bg-emerald-50 border border-emerald-100">
-                    <span class="text-[10px] text-emerald-700 font-semibold block">Stock Bodega</span>
-                    <strong class="text-sm font-black text-emerald-950">${totalStock} unidades</strong>
-                  </div>
-                </div>
-
-                <div>
-                  <div class="flex justify-between text-[11px] mb-1">
-                    <span class="text-slate-500 font-medium">Meta: Q ${b.targetMonthly.toLocaleString()}</span>
-                    <span class="font-black text-slate-800">${pct}%</span>
-                  </div>
-                  <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                    <div class="bg-gradient-to-r from-sky-500 to-emerald-500 h-2 rounded-full" style="width: ${Math.min(pct, 100)}%"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <button onclick="App.switchBranch('${b.id}'); App.navigateTo('bodega');" class="text-sky-600 hover:text-sky-800 font-bold flex items-center gap-1">
-                  <i class="fa-solid fa-boxes-stacked"></i> Ver Bodega
-                </button>
-                <button onclick="App.switchBranch('${b.id}'); App.navigateTo('ventas');" class="text-emerald-600 hover:text-emerald-800 font-bold flex items-center gap-1">
-                  <i class="fa-solid fa-cart-shopping"></i> Vender Aquí
-                </button>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-    };
-
-    /* ==========================================
-       7. CONTROLADOR PRINCIPAL (APP.JS)
-       ========================================== */
-    const App = {
-      init() {
-        DB.init();
-        this.renderBranchSelectors();
-        DashboardModule.init();
-        BodegaModule.init();
-        VentasModule.init();
-        SucursalesModule.renderCards();
-
-        document.getElementById('toggleSidebarBtn').addEventListener('click', () => {
-          document.getElementById('sidebarMenu').classList.toggle('-translate-x-full');
-        });
-      },
-
-      renderBranchSelectors() {
-        const branches = DB.getBranches();
-        const active = DB.getActiveBranch();
-
-        // Selector Topbar
-        const topbarSelect = document.getElementById('topbarBranchSelector');
-        topbarSelect.innerHTML = branches.map(b => `
-          <option value="${b.id}" ${b.id === active.id ? 'selected' : ''}>${b.name}</option>
-        `).join('');
-
-        // Header Manager & Badge
-        document.getElementById('headerBranchManager').textContent = active.manager;
-        document.getElementById('headerBranchNameBadge').textContent = active.name;
-
-        // Sidebar active info
-        document.getElementById('sidebarActiveBranchLabel').textContent = active.name;
-        document.getElementById('sidebarActiveBranchAddress').textContent = active.address;
-        document.getElementById('sidebarTotalBranchesBadge').textContent = branches.length;
-
-        // Lista rápida en Sidebar
-        const sidebarList = document.getElementById('sidebarBranchesList');
-        sidebarList.innerHTML = branches.map(b => `
-          <button onclick="App.switchBranch('${b.id}')" class="w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition flex items-center justify-between ${b.id === active.id ? 'bg-sky-900/60 text-sky-300 font-bold' : 'hover:bg-slate-800/60 text-slate-400'}">
-            <span class="truncate">${b.name}</span>
-            ${b.id === active.id ? '<span class="w-1.5 h-1.5 rounded-full bg-sky-400"></span>' : ''}
-          </button>
-        `).join('');
-      },
-
-      switchBranch(branchId) {
-        DB.setActiveBranchId(branchId);
-        this.renderBranchSelectors();
-
-        // Recargar datos independientes para la sucursal seleccionada
-        DashboardModule.init();
-        BodegaModule.init();
-        VentasModule.init();
-        SucursalesModule.renderCards();
-
-        const active = DB.getActiveBranch();
-        Notification.show(`Cambiado a ${active.name}. Mostrando su respectivo inventario y ventas.`, 'info');
-      },
-
-      navigateTo(view) {
-        ['dashboard', 'bodega', 'ventas', 'sucursales'].forEach(v => {
-          const viewElem = document.getElementById(`view-${v}`);
-          const navBtn = document.getElementById(`nav-${v}`);
-          if (v === view) {
-            viewElem.classList.remove('hidden');
-            if (navBtn) navBtn.className = "w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold transition bg-sky-600 text-white shadow-sm shadow-sky-600/30";
-          } else {
-            viewElem.classList.add('hidden');
-            if (navBtn) navBtn.className = "w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium hover:bg-slate-800/80 transition text-slate-300";
-          }
-        });
-
-        if (window.innerWidth < 1024) {
-          document.getElementById('sidebarMenu').classList.add('-translate-x-full');
-        }
-
-        if (view === 'sucursales') {
-          SucursalesModule.renderCards();
-        }
-      },
-
-      openNewBranchModal() {
-        document.getElementById('branchForm').reset();
-        document.getElementById('branchEditId').value = '';
-        document.getElementById('branchModal').classList.remove('hidden');
-      },
-
-      closeNewBranchModal() {
-        document.getElementById('branchModal').classList.add('hidden');
-      },
-
-      saveBranch(e) {
-        e.preventDefault();
-        const branches = DB.getBranches();
-        const idInput = document.getElementById('branchIdInput').value.trim().toLowerCase().replace(/\s+/g, '-');
-        const name = document.getElementById('branchNameInput').value.trim();
-        const address = document.getElementById('branchAddressInput').value.trim();
-        const manager = document.getElementById('branchManagerInput').value.trim();
-        const phone = document.getElementById('branchPhoneInput').value.trim();
-        const targetMonthly = parseFloat(document.getElementById('branchTargetInput').value) || 150000;
-
-        if (branches.some(b => b.id === idInput)) {
-          Notification.show('Ya existe una sucursal con ese ID. Usa otro identificador.', 'error');
-          return;
-        }
-
-        const newBranch = {
-          id: idInput,
-          name,
-          address,
-          manager,
-          phone,
-          targetMonthly
-        };
-
-        branches.push(newBranch);
-        DB.saveBranches(branches);
-
-        // Pre-cargar 2 productos iniciales de cortesía en su inventario
-        const products = DB.getProducts();
-        products.push(
-          { id: 'p-' + Date.now().toString().slice(-4) + '1', branchId: newBranch.id, code: 'LAT-BLA-01', name: 'Pintura Látex Gama Blanco Galón', category: 'Latex', stock: 15, minStock: 5, cost: 58.00, price: 92.00 },
-          { id: 'p-' + Date.now().toString().slice(-4) + '2', branchId: newBranch.id, code: 'ANT-COR-01', name: 'Anticorrosivo R15 Negro Galón', category: 'Anticorrosivo', stock: 10, minStock: 4, cost: 95.00, price: 155.00 }
-        );
-        DB.saveProducts(products);
-
-        this.closeNewBranchModal();
-        this.switchBranch(newBranch.id);
-        Notification.show(`Sucursal "${name}" agregada con su propia bodega y módulos activados.`);
-      },
-
-      restoreSampleData() {
-        localStorage.clear();
-        DB.seedInitialData();
-        this.init();
-        Notification.show('Datos restaurados a valores de demostración multi-sucursal.', 'info');
-      }
-    };
-
-    window.addEventListener('DOMContentLoaded', () => {
-      App.init();
+<script id="lumi-os-theme-init">
+(function() {
+  function syncBody() {
+    var dt = document.documentElement.getAttribute('data-theme');
+    if (document.body && (dt === 'dark' || dt === 'light')) {
+      document.body.classList.toggle('dark-mode', dt === 'dark');
+    }
+  }
+  function syncTheme(theme) {
+    if (theme !== 'dark' && theme !== 'light') return;
+    document.documentElement.setAttribute('data-theme', theme);
+    syncBody();
+  }
+  if (typeof MutationObserver === 'function') {
+    new MutationObserver(syncBody).observe(document.documentElement, {
+      attributes: true, attributeFilter: ['data-theme']
     });
+  }
+  if (typeof document.addEventListener === 'function') {
+    document.addEventListener('DOMContentLoaded', syncBody);
+  }
+  try {
+    var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq) {
+      var cur = document.documentElement.getAttribute('data-theme');
+      if (!cur) {
+        syncTheme(mq.matches ? 'dark' : 'light');
+      } else {
+        syncTheme(cur);
+      }
+      if (mq.addEventListener) {
+        mq.addEventListener('change', function(e) {
+          syncTheme(e.matches ? 'dark' : 'light');
+        });
+      }
+    }
+  } catch (e) {}
+  window.addEventListener('message', function(e) {
+    if (e.data && (e.data.type === 'set-theme' || e.data.type === 'APPLY_THEME') && e.data.theme) {
+      syncTheme(e.data.theme);
+    }
+  });
+})();
+</script>
+</head>
+<body>
+
+  <div class="widget-container">
+    <!-- Header & Live Metrics Deck -->
+    <div class="header-card">
+      <div class="header-top">
+        <div class="header-title-group">
+          <h2 class="header-title">Arquitectura Georredundante Bancaria</h2>
+          <span class="header-subtitle">Replicación Síncrona en Bloque DWDM &amp; Data Center Alterno (35 km)</span>
+        </div>
+        <div id="status-badge" class="status-badge normal" role="status" aria-live="polite">
+          <span class="status-dot pulse" aria-hidden="true"></span>
+          <span id="status-text">Operación Normal</span>
+        </div>
+      </div>
+
+      <div class="metrics-grid" aria-live="polite" aria-atomic="true">
+        <div class="metric-box">
+          <span class="metric-label">RPO (Objetivo Punto)</span>
+          <span id="metric-rpo" class="metric-value">0 (Cero Pérdida)</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">Latencia de Enlace</span>
+          <span id="metric-latency" class="metric-value">&lt; 2.8 ms</span>
+        </div>
+        <div class="metric-box">
+          <span class="metric-label">RTO (Tiempo Conmut.)</span>
+          <span id="metric-rto" class="metric-value">&lt; 15 seg (Auto)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Control Selector -->
+    <div class="controls-deck" role="group" aria-label="Seleccionar estado del sistema">
+      <button id="btn-normal" type="button" class="state-btn active" aria-pressed="true">
+        Operación Normal (Síncrona)
+      </button>
+      <button id="btn-failover" type="button" class="state-btn" aria-pressed="false">
+        Escenario de Falla (Failover DC2)
+      </button>
+    </div>
+
+    <!-- SVG Architecture Canvas -->
+    <div class="diagram-viewport">
+      <svg id="arch-svg" viewBox="0 0 640 470" xmlns="http://www.w3.org/2000/svg" aria-labelledby="svg-title svg-desc">
+        <title id="svg-title">Diagrama de arquitectura georredundante bancaria</title>
+        <desc id="svg-desc">Dos centros de datos (DC1 y DC2) interconectados por doble anillo de fibra oscura DWDM con replicación síncrona en bloque. Un GSLB/Anycast BGP enruta el tráfico a DC1 en operación normal y a DC2 en caso de failover. Un árbitro de quórum en sitio neutral (cloud) resuelve el split-brain.</desc>
+
+        <defs>
+          <!-- Open Caret Arrowhead Markers -->
+          <marker id="lumi-caret" viewBox="0 0 10 10" refX="7.5" refY="5"
+                  markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+            <path d="M 3 1.2 L 7.5 5 L 3 8.8" fill="none" stroke="var(--on-surface)"
+                  stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+
+          <marker id="caret-active" viewBox="0 0 10 10" refX="7.5" refY="5"
+                  markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+            <path d="M 3 1.2 L 7.5 5 L 3 8.8" fill="none" stroke="var(--primary)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+
+          <marker id="caret-failover" viewBox="0 0 10 10" refX="7.5" refY="5"
+                  markerUnits="userSpaceOnUse" markerWidth="10" markerHeight="10" orient="auto">
+            <path d="M 3 1.2 L 7.5 5 L 3 8.8" fill="none" stroke="var(--error)"
+                  stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- ================= CAPA 1: CANALES BANCARIOS ================= -->
+        <g id="layer-channels">
+          <g class="node-element" transform="translate(30, 20)">
+            <rect x="0" y="0" width="160" height="48" rx="24" fill="var(--surface-bright)" stroke="var(--outline)" stroke-width="1.2"/>
+            <text x="80" y="22" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="13" fill="var(--on-surface)">Banca Móvil / Web</text>
+            <text x="80" y="37" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface-variant)">HTTPS / TLS 1.3</text>
+          </g>
+
+          <g class="node-element" transform="translate(240, 20)">
+            <rect x="0" y="0" width="160" height="48" rx="24" fill="var(--surface-bright)" stroke="var(--outline)" stroke-width="1.2"/>
+            <text x="80" y="22" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="13" fill="var(--on-surface)">40 Agencias</text>
+            <text x="80" y="37" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface-variant)">Red Privada MPLS</text>
+          </g>
+
+          <g class="node-element" transform="translate(450, 20)">
+            <rect x="0" y="0" width="160" height="48" rx="24" fill="var(--surface-bright)" stroke="var(--outline)" stroke-width="1.2"/>
+            <text x="80" y="22" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="13" fill="var(--on-surface)">Red Cajeros ATM</text>
+            <text x="80" y="37" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface-variant)">ISO 8583 / IPsec</text>
+          </g>
+        </g>
+
+        <!-- Lines: Channels -> GSLB -->
+        <path d="M 110 68 L 110 92 Q 110 102 125 102 L 230 102" fill="none" stroke="var(--stroke-default)" stroke-width="1.3" stroke-dasharray="0 4"/>
+        <path d="M 320 68 L 320 102" fill="none" stroke="var(--stroke-default)" stroke-width="1.3" stroke-dasharray="0 4"/>
+        <path d="M 530 68 L 530 92 Q 530 102 515 102 L 410 102" fill="none" stroke="var(--stroke-default)" stroke-width="1.3" stroke-dasharray="0 4"/>
+
+        <!-- ================= CAPA 2: ENRUTAMIENTO GSLB & WITNESS ================= -->
+        <g id="node-gslb" class="node-element" transform="translate(230, 92)">
+          <rect id="gslb-rect" x="0" y="0" width="180" height="44" rx="22" fill="var(--accent-container)" stroke="var(--primary)" stroke-width="1.5"/>
+          <text x="90" y="20" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="13" font-weight="500" fill="var(--on-surface)">GSLB / Anycast BGP</text>
+          <text id="gslb-sub" x="90" y="34" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--primary)">Ruta: DC1 Principal</text>
+        </g>
+
+        <g id="node-witness" class="node-element" transform="translate(480, 92)">
+          <rect x="0" y="0" width="130" height="44" rx="12" fill="var(--surface-dim)" stroke="var(--outline)" stroke-width="1.2"/>
+          <text x="65" y="20" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="12" fill="var(--on-surface)">Árbitro Quorum</text>
+          <text x="65" y="34" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface-variant)">Sitio Neutral (Cloud)</text>
+        </g>
+
+        <path d="M 200 220 L 200 114 L 480 114" fill="none" stroke="var(--outline)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+        <path d="M 440 220 L 440 114 L 480 114" fill="none" stroke="var(--outline)" stroke-width="1" stroke-dasharray="3 3" opacity="0.7"/>
+
+        <!-- ================= DATA CENTER 1 (PRINCIPAL) ================= -->
+        <g id="dc1-group" class="node-element">
+          <rect x="20" y="160" width="280" height="250" rx="16" fill="var(--surface-dim)" stroke="var(--outline)" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <rect x="35" y="172" width="150" height="24" rx="12" fill="var(--surface-bright)"/>
+          <text x="110" y="188" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="12" font-weight="500" fill="var(--on-surface)">Data Center 1 (Sede A)</text>
+
+          <g id="dc1-compute" transform="translate(40, 210)">
+            <rect id="dc1-compute-bg" x="0" y="0" width="240" height="64" rx="12" fill="var(--accent-container)" stroke="var(--primary)" stroke-width="1.5"/>
+            <text x="120" y="26" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="13" font-weight="500" fill="var(--on-surface)">Clúster Cómputo Core</text>
+            <text id="dc1-compute-sub" x="120" y="44" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--primary)">ACTIVO • OBM / Transacciones</text>
+          </g>
+
+          <path id="path-dc1-internal" d="M 160 274 L 160 306" fill="none" stroke="var(--primary)" stroke-width="1.6" marker-end="url(#caret-active)" class="flow-line"/>
+
+          <g id="dc1-san" transform="translate(40, 316)">
+            <rect id="dc1-san-bg" x="0" y="0" width="240" height="64" rx="12" fill="var(--surface-container)" stroke="var(--primary)" stroke-width="1.5"/>
+            <text x="120" y="26" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="13" font-weight="500" fill="var(--on-surface)">SAN All-Flash Principal</text>
+            <text x="120" y="44" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface-variant)">Volúmenes NVMe-oF</text>
+          </g>
+        </g>
+
+        <!-- ================= DATA CENTER 2 (ALTERNO) ================= -->
+        <g id="dc2-group" class="node-element">
+          <rect x="340" y="160" width="280" height="250" rx="16" fill="var(--surface-dim)" stroke="var(--outline)" stroke-width="1.2" stroke-dasharray="4 4"/>
+          <rect x="355" y="172" width="170" height="24" rx="12" fill="var(--surface-bright)"/>
+          <text x="440" y="188" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="12" font-weight="500" fill="var(--on-surface)">Data Center 2 (Alterno 35 km)</text>
+
+          <g id="dc2-compute" transform="translate(360, 210)">
+            <rect id="dc2-compute-bg" x="0" y="0" width="240" height="64" rx="12" fill="var(--surface-bright)" stroke="var(--outline)" stroke-width="1.2"/>
+            <text x="120" y="26" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="13" font-weight="500" fill="var(--on-surface)">Clúster Cómputo Standby</text>
+            <text id="dc2-compute-sub" x="120" y="44" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface-variant)">STANDBY • Listo para Failover</text>
+          </g>
+
+          <path id="path-dc2-internal" d="M 480 274 L 480 306" fill="none" stroke="var(--stroke-default)" stroke-width="1.3" stroke-dasharray="0 4"/>
+
+          <g id="dc2-san" transform="translate(360, 316)">
+            <rect id="dc2-san-bg" x="0" y="0" width="240" height="64" rx="12" fill="var(--surface-container)" stroke="var(--outline)" stroke-width="1.2"/>
+            <text x="120" y="26" text-anchor="middle" font-family="var(--ff-sans, 'Google Sans Flex', sans-serif)" font-size="13" font-weight="500" fill="var(--on-surface)">SAN All-Flash Espejo</text>
+            <text id="dc2-san-sub" x="120" y="44" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface-variant)">Réplica Síncrona en Bloque</text>
+          </g>
+        </g>
+
+        <!-- ================= ENLACES TRAFICO GSLB -> DCs ================= -->
+        <path id="path-gslb-dc1" d="M 280 136 L 280 170 Q 280 180 265 180 L 160 180 L 160 202"
+              fill="none" stroke="var(--primary)" stroke-width="1.8" marker-end="url(#caret-active)" class="flow-line"/>
+
+        <path id="path-gslb-dc2" d="M 360 136 L 360 170 Q 360 180 375 180 L 480 180 L 480 202"
+              fill="none" stroke="var(--stroke-default)" stroke-width="1.3" stroke-dasharray="0 4"/>
+
+        <!-- ================= INTERCONEXION INTER-DC DWDM ================= -->
+        <g id="interconnect-group">
+          <path id="path-fiber-a" d="M 280 338 L 352 338" fill="none" stroke="var(--primary)" stroke-width="1.8" marker-end="url(#caret-active)" class="flow-line"/>
+          <path id="path-fiber-b" d="M 280 358 L 352 358" fill="none" stroke="var(--primary)" stroke-width="1.8" marker-end="url(#caret-active)" class="flow-line"/>
+
+          <g id="rep-pill" transform="translate(320, 348)">
+            <rect x="-65" y="-12" width="130" height="24" rx="12" fill="var(--surface-bright)" stroke="var(--primary)" stroke-width="1"/>
+            <text id="rep-pill-text" x="0" y="4" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" font-weight="500" fill="var(--primary)">Síncrono (RPO=0)</text>
+          </g>
+
+          <text x="320" y="380" text-anchor="middle" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface-variant)">Doble Anillo Fibra Oscura DWDM (&lt;3ms)</text>
+        </g>
+
+        <!-- ================= OVERLAY DE FALLA (DC1 OUTAGE) ================= -->
+        <g id="failover-overlay" style="display: none;" aria-hidden="true">
+          <circle cx="160" cy="180" r="12" fill="var(--error-container)" stroke="var(--error)" stroke-width="1.5"/>
+          <path d="M 154 174 L 166 186 M 166 174 L 154 186" stroke="var(--error)" stroke-width="2" stroke-linecap="round" fill="none" />
+
+          <circle cx="320" cy="348" r="12" fill="var(--error-container)" stroke="var(--error)" stroke-width="1.5"/>
+          <path d="M 314 342 L 326 354 M 326 342 L 314 354" stroke="var(--error)" stroke-width="2" stroke-linecap="round" fill="none" />
+        </g>
+
+        <!-- ================= LEYENDA INFERIOR ================= -->
+        <g transform="translate(20, 435)">
+          <line x1="0" y1="0" x2="600" y2="0" stroke="var(--stroke-default)" stroke-width="1"/>
+
+          <rect x="20" y="12" width="12" height="12" rx="3" fill="var(--accent-container)" stroke="var(--primary)" stroke-width="1"/>
+          <text x="38" y="22" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface)">Ruta / Cómputo Activo</text>
+
+          <rect x="210" y="12" width="12" height="12" rx="3" fill="var(--surface-bright)" stroke="var(--outline)" stroke-width="1"/>
+          <text x="228" y="22" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface)">Standby / Pasivo</text>
+
+          <line x1="370" y1="18" x2="400" y2="18" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 4"/>
+          <text x="408" y="22" font-family="var(--ff-mono, 'Google Sans Code', monospace)" font-size="12" fill="var(--on-surface)">Replicación en Bloque DWDM</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // ---------- Element registry (all exist in markup) ----------
+      var els = {
+        btnNormal:    document.getElementById('btn-normal'),
+        btnFailover:  document.getElementById('btn-failover'),
+        statusBadge:  document.getElementById('status-badge'),
+        statusText:   document.getElementById('status-text'),
+        metricRpo:    document.getElementById('metric-rpo'),
+        metricLat:    document.getElementById('metric-latency'),
+        metricRto:    document.getElementById('metric-rto'),
+        gslbRect:     document.getElementById('gslb-rect'),
+        gslbSub:      document.getElementById('gslb-sub'),
+        dc1Group:     document.getElementById('dc1-group'),
+        dc1ComputeBg: document.getElementById('dc1-compute-bg'),
+        dc1ComputeSub:document.getElementById('dc1-compute-sub'),
+        dc1SanBg:     document.getElementById('dc1-san-bg'),
+        dc2ComputeBg: document.getElementById('dc2-compute-bg'),
+        dc2ComputeSub:document.getElementById('dc2-compute-sub'),
+        dc2SanBg:     document.getElementById('dc2-san-bg'),
+        dc2SanSub:    document.getElementById('dc2-san-sub'),
+        pathGslbDc1:  document.getElementById('path-gslb-dc1'),
+        pathGslbDc2:  document.getElementById('path-gslb-dc2'),
+        pathDc1Int:   document.getElementById('path-dc1-internal'),
+        pathDc2Int:   document.getElementById('path-dc2-internal'),
+        pathFiberA:   document.getElementById('path-fiber-a'),
+        pathFiberB:   document.getElementById('path-fiber-b'),
+        repPillText:  document.getElementById('rep-pill-text'),
+        failoverOverlay: document.getElementById('failover-overlay')
+      };
+
+      // Ensure we have everything; if not, bail gracefully.
+      for (var k in els) {
+        if (!els[k]) { console.warn('Missing element:', k); }
+      }
+
+      // ---------- State ----------
+      var currentState = 'normal';
+
+      // ---------- Helper ----------
+      function toggle(el, cls, on) {
+        if (!el) return;
+        if (on) el.classList.add(cls);
+        else    el.classList.remove(cls);
+      }
+
+      // ---------- Visualization update ----------
+      function updateViz() {
+        var failover = currentState === 'failover';
+
+        // Buttons (ARIA + visual)
+        toggle(els.btnNormal,   'active', !failover);
+        toggle(els.btnFailover, 'active',  failover);
+        if (els.btnNormal)   els.btnNormal.setAttribute('aria-pressed',   String(!failover));
+        if (els.btnFailover) els.btnFailover.setAttribute('aria-pressed', String(failover));
+
+        // Status badge
+        toggle(els.statusBadge, 'normal',   !failover);
+        toggle(els.statusBadge, 'failover',  failover);
+        if (els.statusText) {
+          els.statusText.textContent = failover
+            ? 'Falla DC1 - Failover a DC2'
+            : 'Operación Normal';
+        }
+
+        // Metrics
+        if (els.metricRpo) {
+          els.metricRpo.textContent = failover ? '0 (Datos Protegidos)' : '0 (Cero Pérdida)';
+          toggle(els.metricRpo, 'positive', failover);
+        }
+        if (els.metricLat) {
+          els.metricLat.textContent = failover ? 'N/A (Sede 1 Offline)' : '< 2.8 ms';
+        }
+        if (els.metricRto) {
+          els.metricRto.textContent = failover ? '8.4 seg (Completado)' : '< 15 seg (Auto)';
+        }
+
+        // GSLB
+        if (els.gslbRect) {
+          els.gslbRect.setAttribute('fill',   failover ? 'var(--error-container)' : 'var(--accent-container)');
+          els.gslbRect.setAttribute('stroke', failover ? 'var(--error)'           : 'var(--primary)');
+        }
+        if (els.gslbSub) {
+          els.gslbSub.textContent = failover ? 'Ruta: DC2 (Conmutado)' : 'Ruta: DC1 Principal';
+          els.gslbSub.setAttribute('fill', failover ? 'var(--error)' : 'var(--primary)');
+        }
+
+        // DC1
+        toggle(els.dc1Group, 'fade-dim', failover);
+        if (els.dc1ComputeBg) {
+          els.dc1ComputeBg.setAttribute('fill',         failover ? 'var(--surface-dim)' : 'var(--accent-container)');
+          els.dc1ComputeBg.setAttribute('stroke',       failover ? 'var(--error)'       : 'var(--primary)');
+          els.dc1ComputeBg.setAttribute('stroke-width', failover ? '1'                 : '1.5');
+        }
+        if (els.dc1ComputeSub) {
+          els.dc1ComputeSub.textContent = failover ? 'FUERA DE SERVICIO (CAÍDO)' : 'ACTIVO • OBM / Transacciones';
+          els.dc1ComputeSub.setAttribute('fill', failover ? 'var(--error)' : 'var(--primary)');
+        }
+        if (els.dc1SanBg) {
+          els.dc1SanBg.setAttribute('fill',   failover ? 'var(--surface-dim)' : 'var(--surface-container)');
+          els.dc1SanBg.setAttribute('stroke', failover ? 'var(--error)'       : 'var(--primary)');
+        }
+        if (els.pathDc1Int) {
+          els.pathDc1Int.setAttribute('stroke',       failover ? 'var(--error)' : 'var(--primary)');
+          els.pathDc1Int.setAttribute('stroke-width', failover ? '1'            : '1.6');
+          els.pathDc1Int.setAttribute('marker-end',   failover ? ''             : 'url(#caret-active)');
+          toggle(els.pathDc1Int, 'flow-line', !failover);
+        }
+
+        // DC2
+        if (els.dc2ComputeBg) {
+          els.dc2ComputeBg.setAttribute('fill',         failover ? 'var(--accent-container)' : 'var(--surface-bright)');
+          els.dc2ComputeBg.setAttribute('stroke',       failover ? 'var(--primary)'          : 'var(--outline)');
+          els.dc2ComputeBg.setAttribute('stroke-width', failover ? '1.5'                    : '1.2');
+        }
+        if (els.dc2ComputeSub) {
+          els.dc2ComputeSub.textContent = failover
+            ? 'ACTIVO (PROMOVIDO A PRIMARIO)'
+            : 'STANDBY • Listo para Failover';
+          els.dc2ComputeSub.setAttribute('fill', failover ? 'var(--primary)' : 'var(--on-surface-variant)');
+        }
+        if (els.dc2SanBg) {
+          els.dc2SanBg.setAttribute('stroke', failover ? 'var(--primary)' : 'var(--outline)');
+        }
+        if (els.dc2SanSub) {
+          els.dc2SanSub.textContent = failover
+            ? 'Lectura / Escritura Local (Primario)'
+            : 'Réplica Síncrona en Bloque';
+        }
+        if (els.pathDc2Int) {
+          els.pathDc2Int.setAttribute('stroke',       failover ? 'var(--primary)' : 'var(--stroke-default)');
+          els.pathDc2Int.setAttribute('stroke-width', failover ? '1.6'           : '1.3');
+          els.pathDc2Int.setAttribute('marker-end',   failover ? 'url(#caret-active)' : '');
+          toggle(els.pathDc2Int, 'flow-line', failover);
+        }
+
+        // Routes GSLB -> DCs
+        if (els.pathGslbDc1) {
+          els.pathGslbDc1.setAttribute('stroke',       failover ? 'var(--error)' : 'var(--primary)');
+          els.pathGslbDc1.setAttribute('stroke-width', failover ? '1'            : '1.8');
+          els.pathGslbDc1.setAttribute('marker-end',   failover ? ''             : 'url(#caret-active)');
+          toggle(els.pathGslbDc1, 'flow-line',    !failover);
+          toggle(els.pathGslbDc1, 'route-broken',  failover);
+        }
+        if (els.pathGslbDc2) {
+          els.pathGslbDc2.setAttribute('stroke',       failover ? 'var(--primary)' : 'var(--stroke-default)');
+          els.pathGslbDc2.setAttribute('stroke-width', failover ? '1.8'           : '1.3');
+          els.pathGslbDc2.setAttribute('marker-end',   failover ? 'url(#caret-active)' : '');
+          toggle(els.pathGslbDc2, 'flow-line', failover);
+        }
+
+        // Fibers DWDM
+        [els.pathFiberA, els.pathFiberB].forEach(function (p) {
+          if (!p) return;
+          p.setAttribute('stroke',       failover ? 'var(--error)' : 'var(--primary)');
+          p.setAttribute('stroke-width', failover ? '1'            : '1.8');
+          p.setAttribute('marker-end',   failover ? ''             : 'url(#caret-active)');
+          toggle(p, 'flow-line',    !failover);
+          toggle(p, 'fiber-broken',  failover);
+        });
+
+        // Rep pill
+        if (els.repPillText) {
+          els.repPillText.textContent = failover ? 'Enlace Interrumpido' : 'Síncrono (RPO=0)';
+          els.repPillText.setAttribute('fill', failover ? 'var(--error)' : 'var(--primary)');
+        }
+
+        // Overlay markers
+        if (els.failoverOverlay) {
+          els.failoverOverlay.style.display = failover ? 'block' : 'none';
+        }
+      }
+
+      // ---------- State switcher ----------
+      function switchState(state) {
+        if (state !== 'normal' && state !== 'failover') return;
+        currentState = state;
+        updateViz();
+      }
+
+      // ---------- Wire controls ----------
+      if (els.btnNormal)   els.btnNormal.addEventListener('click',   function () { switchState('normal'); });
+      if (els.btnFailover) els.btnFailover.addEventListener('click', function () { switchState('failover'); });
+
+      // ---------- Initial render ----------
+      updateViz();
+
+      // ---------- Host-driven theme ----------
+      function applyTheme(t) {
+        if (t !== 'dark' && t !== 'light') return;
+        document.documentElement.setAttribute('data-theme', t);
+        updateViz();
+      }
+
+      if (!document.documentElement.hasAttribute('data-theme') &&
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        applyTheme('dark');
+      }
+
+      window.addEventListener('message', function (e) {
+        if (e.data && (e.data.type === 'set-theme' || e.data.type === 'APPLY_THEME') && e.data.theme) {
+          applyTheme(e.data.theme);
+        }
+      });
+
+      // ---------- Auto-resize iframe ----------
+      (function autoResize() {
+        function notifyHeight() {
+          var h = Math.ceil(Math.max(
+            document.documentElement.scrollHeight || 0,
+            document.body ? document.body.scrollHeight : 0
+          ));
+          if (h > 0) {
+            try { window.parent.postMessage({ type: 'widget-resize', height: h }, '*'); } catch (err) {}
+          }
+        }
+        window.addEventListener('load', function () { setTimeout(notifyHeight, 120); });
+        if (typeof ResizeObserver === 'function') {
+          try {
+            new ResizeObserver(notifyHeight).observe(document.body);
+          } catch (e) {}
+        }
+      })();
+    })();
   </script>
+
+<script>/*luminous-slider-normalizer*/(function(){function f(r){if(!r||r.type!=='range')return;var mn=parseFloat(r.min||'0'),mx=parseFloat(r.max||'100'),v=parseFloat(r.value);if(isNaN(v))v=(mn+mx)/2;var p=mx>mn?((v-mn)/(mx-mn))*100:50;r.style.setProperty('--progress',p+'%');r.style.removeProperty('--slider-fill');}function all(){document.querySelectorAll('input[type="range"], .lumi-slider').forEach(f);}document.addEventListener('input',function(e){f(e.target);});if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',all);else all();})();</script>
 </body>
 </html>
